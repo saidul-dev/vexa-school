@@ -1,0 +1,62 @@
+## Dependencies
+/vendor
+/node_modules
+
+## Environment / secrets
+.env
+.env.backup
+.env.production
+.env.*.local
+
+## Laravel storage & cache (generated at runtime)
+/storage/*.key
+/storage/app/*
+!/storage/app/public
+/storage/app/public/*
+!/storage/app/public/.gitkeep
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/testing/*
+!/storage/framework/testing/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+/storage/logs/*
+!/storage/logs/.gitignore
+/bootstrap/cache/*.php
+
+## Public assets built/linked, not source
+/public/storage
+/public/hot
+
+## User uploads bundled with the CodeCanyon demo data
+/upload/*
+!/upload/.gitkeep
+
+## Build tooling logs (compiled public/css, public/js, mix-manifest.json are tracked
+## since they ship with the script and there's no guaranteed rebuild step)
+npm-debug.log
+yarn-error.log
+
+## Testing
+.phpunit.result.cache
+/coverage
+
+## IDE / OS
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+
+## Homestead / Vagrant (in case used later)
+Homestead.json
+Homestead.yaml
+.vagrant
+
+## Misc local data dumps
+*.sql
+*.sqlite
+Attendence_report.csv

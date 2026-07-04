@@ -1,0 +1,238 @@
+.eSection-dashboardItems {
+  .row {
+    row-gap: 30px;
+  }
+}
+// Dashboard Short Details
+.dashboard_ShortListItems {
+  .row {
+    row-gap: 30px;
+  }
+}
+.dashboard_ShortListItem {
+  min-width: 274px;
+  min-height: 168px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 6px 15px #00000001;
+  padding: 14px;
+}
+.dsHeader {
+  padding-bottom: 14px;
+  border-bottom: 1px solid $eColor_Whiteish;
+  .title {
+    font-size: 16px;
+    font-weight: $fw_Medium;
+    line-height: 28px;
+    color: $eColor_Blackish;
+  }
+  .ds_link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    background-color: #eef9ff;
+    &.ds_sutdent {
+      svg {
+        path {
+          fill: $eColor_Blue !important;
+        }
+      }
+    }
+    &.ds_teacher {
+      svg {
+        path {
+          fill: $eColor_Green !important;
+        }
+      }
+    }
+    &.ds_parent {
+      svg {
+        path {
+          fill: $eColor_Orange !important;
+        }
+      }
+    }
+    &.ds_staff {
+      svg {
+        path {
+          fill: $absent !important;
+        }
+      }
+    }
+  }
+}
+.dsBody {
+  padding-top: 24px;
+  .total_no {
+    font-size: 34px;
+    font-weight: $fw_Bold;
+    line-height: 28px;
+    color: $eColor_Blueish;
+  }
+  .total_info {
+    font-size: 14px;
+    line-height: 28px;
+    color: $eColor_Blackish;
+  }
+  .ds_item_icon {
+    max-width: 74px;
+  }
+}
+
+.dashboard_report {
+  border-radius: 5px;
+  padding: 20px 20px 0;
+  box-shadow: 0 6px 15px #00000001;
+  min-height: 366px;
+}
+
+// Dashboad total attendance
+.dashboard_attendance {
+  background-color: $eColor_Blue;
+}
+.ds_report_header {
+  gap: 20px;
+}
+.ds_report_left {
+  .title {
+    font-size: 18px;
+    font-weight: $fw_Medium;
+    line-height: 28px;
+    color: #fff;
+  }
+}
+.ds_report_count {
+  gap: 14px;
+  padding-top: 14px;
+  .total_no {
+    font-size: 34px;
+    font-weight: $fw_SemiBold;
+    line-height: 28px;
+    color: #fff;
+  }
+}
+.ds_attend_percent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 65px;
+  height: 25px;
+  padding: 4px 12px;
+  background-color: #0090e2;
+  border-radius: 15px;
+  .icon {
+    margin-right: 3px;
+  }
+  span {
+    font-size: 12px;
+    font-weight: $fw_Medium;
+    line-height: 28px;
+    color: #fff;
+  }
+}
+.all_report_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 164px;
+  height: 50px;
+  padding: 15px 20px;
+  border: 1px solid #82d2ff;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: $fw_Medium;
+  line-height: 28px;
+  color: #fff;
+  transition: all 0.3s;
+  &:hover {
+    background-color: #82d2ff;
+    color: #fff;
+  }
+}
+
+// Dashboard Income Report
+.dashboard_income_report {
+  background-color: $eColor_Green;
+  .ds_report_count {
+    padding-top: 26px;
+  }
+}
+
+// Dashboard Upcoming Report
+.dashboard_upcoming_events {
+  background-color: $absent;
+  padding-bottom: 20px;
+}
+.upcoming_events_items {
+  padding-bottom: 30px;
+  > li {
+    padding-left: 19px;
+    margin-bottom: 20px;
+    position: relative;
+    max-height: 51px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      border-radius: 14px;
+      background-color: #fb7d9c;
+    }
+  }
+}
+.upcoming_events_item {
+  .events_info {
+    .title {
+      display: inline-block;
+      font-size: 18px;
+      font-weight: $fw_Medium;
+      // line-height: 37px;
+      color: #fff;
+    }
+    .date {
+      font-size: 14px;
+      // line-height: 37px;
+      color: #fcb7c8;
+    }
+  }
+}
+.all_report_btn_2 {
+  width: 77px;
+  height: 29px;
+  margin-left: auto;
+  text-align: center;
+  line-height: 29px;
+  padding: 4px 15px;
+  background-color: #ff5b83;
+  border: 1px solid #ff5b83;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 37px;
+  color: #fff;
+  transition: all 0.3s;
+  &:hover {
+    background-color: transparent;
+    color: #fff;
+  }
+}
+
+.verticalMenu {
+  position: relative;
+  .eBtn {
+    background-color: transparent;
+    text-align: right;
+    width: auto;
+    height: auto;
+    &::after {
+      display: none;
+    }
+  }
+}

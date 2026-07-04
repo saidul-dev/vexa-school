@@ -1,0 +1,235 @@
+@media all and (max-width:1320px){
+    .bannar-area:after,
+    .bannar-area .safe-top,
+    .bannar-area .safe-left,
+    .pricing-area:after,
+    .pricing-area:before {
+        display: none;
+    }
+}
+@media all and (min-width:992px){
+    .menu-items{
+        display: block !important;
+    }
+    .primary-menu{
+        display: -webkit-box !important;
+        display: -ms-flexbox !important;
+        display: flex !important;
+    }
+}
+@media all and (max-width:991px){
+    .small-device-show ,
+    .crose-icon,
+    .hambargar-bar{
+        display: block;
+    }
+    .menu-items{
+        display: none;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        background-color: #fff;
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+        left: 0;
+        padding: 20px 0;
+        height: 100vh;
+        z-index: 999;
+    }
+    .primary-menu {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        margin-left: 30px;
+        padding-top: 90px;
+    }
+    .primary-menu li a {
+        margin-bottom: 12px;
+    }
+    .bananr-right-img {
+        -webkit-box-pack: start;
+            -ms-flex-pack: start;
+                justify-content: flex-start;
+    }
+    /* Title */
+    .title-area h1 {
+        font-size: 90px;
+        top: -53px;
+    }
+    .lan-contact {
+        padding: 40px 60px;
+    }
+    .footer-items form {
+        width: 100%;
+    }
+}
+@media all and (max-width:768px){
+    .active-bg {
+        padding: 15px 0;
+    }
+    /* Bannar Area */
+    .bannar-content h2 {
+        font-size: 42px;
+        line-height: 57px;
+    }
+    .bannar-area {
+        padding-bottom: 55px;
+    }
+    /* Title */
+    .title-area h1 {
+        font-size: 60px;
+        top: -29px;
+    }
+    .section-padding {
+        padding-top: 80px;
+    }
+    /* Pricing Area */
+    .pricing-area {
+        margin-top: 80px;
+        padding-bottom: 80px;
+    }
+    .contact-us-area,
+    .faq-area {
+        padding-top: 80px;
+    }
+    .contact-us-area{
+        margin-bottom: 80px;
+    }
+    /* Contact */
+    .lan-contact {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+    }
+    .contact-right {
+        -webkit-box-ordinal-group: 0;
+            -ms-flex-order: -1;
+                order: -1;
+        margin-bottom: 25px;
+    }
+    .envolepe-messeage img {
+        height: 50px;
+        width: 50px;
+    }
+    .envolepe-messeage {
+        height: 120px;
+        width: 120px;
+    }
+    .footer-social {
+        margin-top: 30px;
+    }
+}
+@media all and (max-width:576px){
+    .small-device-show img,
+    .logo img {
+        height: 40px;
+    }
+    .primary-menu {
+        padding-top: 68px;
+    }
+    .active-bg {
+        padding: 10px 0;
+    }
+    .signUp-btn {
+        padding: 9px 25px;
+    }
+    .crose-icon,
+    .hambargar-bar {
+        height: 39px;
+        width: 39px;
+        line-height: 39px;
+    }
+    .login-btn {
+        margin-right: 15px;
+    }
+    .register-form-modal .modal-title {
+        font-size: 22px !important;
+    }
+    /* Bannar Area */
+    .bannar-content h2 {
+        font-size: 32px;
+        line-height: 42px;
+    }
+    .bannar-content h4 {
+        margin-bottom: 20px;
+    }
+    .bannar-content p {
+        margin-top: 14px;
+    }
+    .ekatoor-user {
+        margin-top: 40px;
+    }
+    .single-user h3 {
+        font-size: 35px;
+        margin-bottom: 2px;
+    }
+    .single-user span {
+        font-size: 17px;
+    }
+    .bananr-right-img {
+        padding-top: 35px;
+    }
+    /* Title */
+    .title-area h3 {
+        font-size: 30px;
+    }
+    /*Feature/ Service Area */
+    .service-items:after {
+        top: inherit;
+        left: 0;
+        width: 50%;
+        height: 1px;
+        bottom: -16px;
+    }
+    .service-items:before {
+        top: inherit;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        bottom: -16px;
+    }
+    .service-items:hover:after {
+        height: 1px;
+        width: 100%;
+    }
+    .title-area {
+        margin-bottom: 45px;
+    }
+    .title-area p {
+        font-size: 16px;
+    }
+    .service-text {
+        padding-right: 21px;
+    }
+    /* Pricing  */
+    .pricing-item li {
+        margin-top: 13px;
+    }
+    /* Faq */
+    .accordion-body p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .accordion-button {
+        padding: 22px 20px;
+        font-size: 17px;
+    }
+    .contact-left h3 {
+        font-size: 25px;
+        margin-bottom: 18px;
+    }
+    /* Footer Area */
+    .footer-area {
+        padding-top: 60px;
+    }
+    .footer-items li {
+        margin-bottom: 8px;
+    }
+    .footer-items ul li a {
+        font-size: 14px;
+    }
+    .contacts .ad-contacts li p {
+        font-size: 14px !important;
+    }
+}

@@ -1,0 +1,97 @@
+.custom-accordion {
+  @media screen and (max-width: 991px) {
+    margin-bottom: 20px;
+  }
+  .accordion-item {
+    overflow: hidden;
+    border-color: rgba(231, 234, 243, 0.7);
+    &:first-of-type {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+    &:last-of-type {
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+    .accordion-header {
+      .accordion-button {
+        font-size: 14px;
+        line-height: 30px;
+        font-weight: $fw_Medium;
+        color: $eColor_Blueish;
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
+        padding: 7px 12px 7px 20px;
+        &:not(.collapsed) {
+          position: relative;
+          background-color: #f1f2f7;
+          border-top: 0px solid rgba(231, 234, 243, 0.7);
+          border-bottom: 0px solid rgba(231, 234, 243, 0.7);
+        }
+        &::after {
+          background-image: url(../images/arrow_bottom.svg) !important;
+          background-size: 12px;
+          height: 7px;
+          width: 12px;
+        }
+        &:focus {
+          border-color: transparent !important;
+        }
+        &:focus-within {
+          outline: none !important;
+        }
+      }
+    }
+    .accordion-body {
+      padding: 4px 19px 6px;
+      p {
+        font-size: 13px;
+        font-weight: $fw_Regular;
+        color: $eColor_Blackish;
+      }
+    }
+  }
+}
+
+.custom-accordion-flush {
+  padding: 0px 14px;
+  border: 1px solid rgba(231, 234, 243, 0.7);
+  border-radius: 10px;
+  .accordion-item {
+    .accordion-header {
+      .accordion-button {
+        font-size: 14px;
+        line-height: 30px;
+        font-weight: $fw_Medium;
+        color: $eColor_Blueish;
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
+        padding: 7px 12px 7px 20px;
+        &:not(.collapsed) {
+          position: relative;
+          background-color: #f1f2f7;
+          border-top: 0px solid rgba(231, 234, 243, 0.7);
+          border-bottom: 0px solid rgba(231, 234, 243, 0.7);
+        }
+        &::after {
+          background-image: url(../images/arrow_bottom.svg) !important;
+          background-size: 12px;
+          height: 7px;
+          width: 12px;
+        }
+        &:focus {
+          border-color: transparent !important;
+        }
+        &:focus-within {
+          outline: none !important;
+        }
+      }
+    }
+    .accordion-body {
+      padding: 4px 19px 6px;
+      p {
+        font-size: 13px;
+        font-weight: $fw_Regular;
+        color: $eColor_Blackish;
+      }
+    }
+  }
+}
