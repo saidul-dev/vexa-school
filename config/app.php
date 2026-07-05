@@ -9,12 +9,10 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
     $host_type = "http://";
 }
 
-//check is it valet server or laravel inbuilt server
-if ($hostname == '127.0.0.1:8000' || str_contains($script_name, 'valet/')) {
-    $asset_url = null;
-} else {
-    $asset_url = str_replace("index.php", "", $script_name) . 'public';
-}
+// Document root nginx-e "public/" folder-e set kora (standard deployment), tai
+// SCRIPT_NAME-based path guessing bypass kore Laravel-er normal asset URL
+// resolution (APP_URL / request host) use korte dicchi.
+$asset_url = null;
 
 $app_url = $host_type . $hostname;
 
