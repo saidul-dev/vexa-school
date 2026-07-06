@@ -57,6 +57,13 @@
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100">{{ get_phrase('Login') }}</button>
+                                        <div class="form-group mt-2">
+                                            <div class="d-flex justify-content-between gap-2">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm w-100 demo-login-btn" data-email="superadmin@example.com" data-password="1234">{{ get_phrase('Super Admin') }}</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm w-100 demo-login-btn" data-email="admin@example.com" data-password="1234">{{ get_phrase('Admin') }}</button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm w-100 demo-login-btn" data-email="student@example.com" data-password="1234">{{ get_phrase('Student') }}</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -67,4 +74,13 @@
         </div>
     </div>
 </div>
+
+<script>
+document.querySelectorAll('.demo-login-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        document.getElementById('email').value = btn.dataset.email;
+        document.getElementById('password').value = btn.dataset.password;
+    });
+});
+</script>
 @endsection

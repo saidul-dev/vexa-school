@@ -34,6 +34,20 @@
 /upload/*
 !/upload/.gitkeep
 
+## Runtime file uploads (logos, thumbnails, docs, etc.) - already-committed demo
+## files stay tracked, but new files saved into these folders are not tracked
+/public/assets/uploads/course_thumbnails/*
+/public/assets/uploads/email_logo/*
+/public/assets/uploads/frontend_features/*
+/public/assets/uploads/lesson-image/*
+/public/assets/uploads/logo/*
+/public/assets/uploads/noticeboard/*
+/public/assets/uploads/offline_payment/*
+/public/assets/uploads/school_logo/*
+/public/assets/uploads/syllabus/*
+/public/assets/uploads/user-docs/*
+/public/assets/uploads/user-images/*
+
 ## Build tooling logs (compiled public/css, public/js, mix-manifest.json are tracked
 ## since they ship with the script and there's no guaranteed rebuild step)
 npm-debug.log
