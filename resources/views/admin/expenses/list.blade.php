@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-use App\Models\ExpenseCategory;
+use App\Models\AccountHead;
 
 ?>
 @if(count($expenses) > 0)
@@ -9,8 +9,9 @@ use App\Models\ExpenseCategory;
         <thead>
           <tr>
             <th>{{ get_phrase('Date') }}</th>
+            <th>{{ get_phrase('Title') }}</th>
             <th>{{ get_phrase('Amount') }}</th>
-            <th>{{ get_phrase('Expense category') }}</th>
+            <th>{{ get_phrase('Expense head') }}</th>
             <th class="text-end">{{ get_phrase('Option') }}</th>
           </tr>
         </thead>
@@ -21,11 +22,14 @@ use App\Models\ExpenseCategory;
                     {{ date('D, d-M-Y', $expense['date']) }}
                 </td>
                 <td>
+                    {{ $expense['title'] }}
+                </td>
+                <td>
                     {{ school_currency($expense['amount']) }}
                 </td>
                 <td>
-                    <?php $expense_categories = ExpenseCategory::find($expense['expense_category_id']); ?>
-                    {{ $expense_categories['name'] }}
+                    <?php $account_head = AccountHead::find($expense['account_head_id']); ?>
+                    {{ $account_head->name ?? '' }}
                 </td>
                 <td class="text-start">
                     <div class="adminTable-action">

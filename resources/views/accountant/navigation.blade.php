@@ -94,7 +94,7 @@
             </li>
             <!-- Sidebar menu -->
 
-            <li class="nav-links-li {{ request()->is('accountant/student_fee_manager*') || request()->is('accountant/offline_payment/pending*')|| request()->is('accountant/expense_category*') || request()->is('accountant/expenses*') ? 'showMenu':'' }}">
+            <li class="nav-links-li {{ request()->is('accountant/student_fee_manager*') || request()->is('accountant/offline_payment/pending*')|| request()->is('accountant/expense_category*') || request()->is('accountant/expenses*') || request()->is('accountant/account_heads*') || request()->is('accountant/income*') || request()->is('accountant/reports*') ? 'showMenu':'' }}">
                 <div class="iocn-link">
                     <a href="#">
                         <div class="sidebar_icon">
@@ -132,6 +132,18 @@
                             </span></a></li>
                     <li><a class="{{ (request()->is('accountant/expense_category*')) ? 'active' : '' }}" href="{{ route('accountant.expense.category_list') }}"><span>
                                 {{ get_phrase('Expense Category') }}
+                            </span></a></li>
+                    <li><a class="{{ (request()->is('accountant/account_heads*')) ? 'active' : '' }}" href="{{ route('accountant.account_heads.list') }}"><span>
+                                {{ get_phrase('Account Heads') }}
+                            </span></a></li>
+                    <li><a class="{{ (request()->is('accountant/income*')) ? 'active' : '' }}" href="{{ route('accountant.income.list') }}"><span>
+                                {{ get_phrase('Income Manager') }}
+                            </span></a></li>
+                    <li><a class="{{ (request()->is('accountant/reports/receipts_payments*')) ? 'active' : '' }}" href="{{ route('accountant.reports.receipts_payments') }}"><span>
+                                {{ get_phrase('Receipts & Payments Statement') }}
+                            </span></a></li>
+                    <li><a class="{{ (request()->is('accountant/reports/trial_balance*')) ? 'active' : '' }}" href="{{ route('accountant.reports.trial_balance') }}"><span>
+                                {{ get_phrase('Trial Balance') }}
                             </span></a></li>
                 </ul>
             </li>

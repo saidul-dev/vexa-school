@@ -469,6 +469,27 @@ Route::controller(AdminController::class)->middleware('admin','auth')->group(fun
     Route::get('admin/expense_category/delete/{id}', 'expenseCategoryDelete')->name('admin.expense.category_delete');
 
 
+    //Account head routes
+    Route::get('admin/account_heads/list', 'accountHeadList')->name('admin.account_heads.list')->middleware('admin_permission');
+    Route::get('admin/account_heads/create', 'createAccountHead')->name('admin.account_heads.open_modal');
+    Route::post('admin/account_heads/added', 'accountHeadCreate')->name('admin.create.account_heads');
+    Route::get('admin/account_heads/{id}', 'editAccountHead')->name('admin.edit.account_heads');
+    Route::post('admin/account_heads/{id}', 'accountHeadUpdate')->name('admin.account_heads.update');
+    Route::get('admin/account_heads/delete/{id}', 'accountHeadDelete')->name('admin.account_heads.delete');
+
+    //Income routes
+    Route::get('admin/income/list', 'incomeList')->name('admin.income.list')->middleware('admin_permission');
+    Route::get('admin/income/create', 'createIncome')->name('admin.income.open_modal');
+    Route::post('admin/income/added', 'incomeCreate')->name('admin.create.income');
+    Route::get('admin/income/{id}', 'editIncome')->name('admin.edit.income');
+    Route::post('admin/income/{id}', 'incomeUpdate')->name('admin.income.update');
+    Route::get('admin/income/delete/{id}', 'incomeDelete')->name('admin.income.delete');
+
+    //Report routes
+    Route::get('admin/reports/receipts_payments', 'receiptsPaymentsStatement')->name('admin.reports.receipts_payments')->middleware('admin_permission');
+    Route::get('admin/reports/trial_balance', 'trialBalance')->name('admin.reports.trial_balance')->middleware('admin_permission');
+
+
     //Book routes
     Route::get('admin/book/list', 'bookList')->name('admin.book.book_list')->middleware('admin_permission');
     Route::get('admin/book/create', 'createBook')->name('admin.book.open_modal');
@@ -865,6 +886,27 @@ Route::controller(AccountantController::class)->middleware('accountant','auth')-
     Route::get('accountant/expense_category/{id}', 'editExpenseCategory')->name('accountant.edit.expense_category');
     Route::post('accountant/expense_category/{id}', 'expenseCategoryUpdate')->name('accountant.expense_category.update');
     Route::get('accountant/expense_category/delete/{id}', 'expenseCategoryDelete')->name('accountant.expense.category_delete');
+
+
+    //Account head routes
+    Route::get('accountant/account_heads/list', 'accountHeadList')->name('accountant.account_heads.list');
+    Route::get('accountant/account_heads/create', 'createAccountHead')->name('accountant.account_heads.open_modal');
+    Route::post('accountant/account_heads/added', 'accountHeadCreate')->name('accountant.create.account_heads');
+    Route::get('accountant/account_heads/{id}', 'editAccountHead')->name('accountant.edit.account_heads');
+    Route::post('accountant/account_heads/{id}', 'accountHeadUpdate')->name('accountant.account_heads.update');
+    Route::get('accountant/account_heads/delete/{id}', 'accountHeadDelete')->name('accountant.account_heads.delete');
+
+    //Income routes
+    Route::get('accountant/income/list', 'incomeList')->name('accountant.income.list');
+    Route::get('accountant/income/create', 'createIncome')->name('accountant.income.open_modal');
+    Route::post('accountant/income/added', 'incomeCreate')->name('accountant.create.income');
+    Route::get('accountant/income/{id}', 'editIncome')->name('accountant.edit.income');
+    Route::post('accountant/income/{id}', 'incomeUpdate')->name('accountant.income.update');
+    Route::get('accountant/income/delete/{id}', 'incomeDelete')->name('accountant.income.delete');
+
+    //Report routes
+    Route::get('accountant/reports/receipts_payments', 'receiptsPaymentsStatement')->name('accountant.reports.receipts_payments');
+    Route::get('accountant/reports/trial_balance', 'trialBalance')->name('accountant.reports.trial_balance');
 
 
     //Noticeboard routes

@@ -15,6 +15,6 @@ class StudentFeeManager extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'total_amount', 'class_id', 'parent_id','student_id', 'payment_method', 'paid_amount', 'status', 'school_id', 'session_id', 'timestamp', 'discounted_price', 'amount'
+        'title', 'total_amount', 'class_id', 'parent_id','student_id', 'payment_method', 'paid_amount', 'status', 'school_id', 'session_id', 'timestamp', 'discounted_price', 'amount', 'account_head_id'
     ];
 }

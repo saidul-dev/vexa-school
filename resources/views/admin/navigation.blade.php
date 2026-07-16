@@ -367,8 +367,8 @@ use App\Models\User;
         </li>
         @endif
 
-        @if(empty($user->menu_permission) || in_array('admin.fee_manager.list', $menu_permission) || in_array('admin.offline_payment_pending', $menu_permission) || in_array('admin.expense.list', $menu_permission) || in_array('admin.expense.category_list', $menu_permission)) 
-        <li class="nav-links-li {{ request()->is('admin/fee_manager*') || request()->is('admin/offline_payment/pending*')|| request()->is('admin/expense_category*') || request()->is('admin/expenses*') ? 'showMenu':'' }}">
+        @if(empty($user->menu_permission) || in_array('admin.fee_manager.list', $menu_permission) || in_array('admin.offline_payment_pending', $menu_permission) || in_array('admin.expense.list', $menu_permission) || in_array('admin.expense.category_list', $menu_permission) || in_array('admin.account_heads.list', $menu_permission) || in_array('admin.income.list', $menu_permission) || in_array('admin.reports.receipts_payments', $menu_permission) || in_array('admin.reports.trial_balance', $menu_permission))
+        <li class="nav-links-li {{ request()->is('admin/fee_manager*') || request()->is('admin/offline_payment/pending*')|| request()->is('admin/expense_category*') || request()->is('admin/expenses*') || request()->is('admin/account_heads*') || request()->is('admin/income*') || request()->is('admin/reports*') ? 'showMenu':'' }}">
             <div class="iocn-link">
                 <a href="#">
                     <div class="sidebar_icon">
@@ -414,7 +414,27 @@ use App\Models\User;
               <li><a class="{{ (request()->is('admin/expense_category*')) ? 'active' : '' }}" href="{{ route('admin.expense.category_list') }}"><span>
                 {{ get_phrase('Expense Category') }}
               </span></a></li>
-              @endif  
+              @endif
+              @if(empty($user->menu_permission) || in_array('admin.account_heads.list', $menu_permission))
+              <li><a class="{{ (request()->is('admin/account_heads*')) ? 'active' : '' }}" href="{{ route('admin.account_heads.list') }}"><span>
+                {{ get_phrase('Account Heads') }}
+              </span></a></li>
+              @endif
+              @if(empty($user->menu_permission) || in_array('admin.income.list', $menu_permission))
+              <li><a class="{{ (request()->is('admin/income*')) ? 'active' : '' }}" href="{{ route('admin.income.list') }}"><span>
+                {{ get_phrase('Income Manager') }}
+              </span></a></li>
+              @endif
+              @if(empty($user->menu_permission) || in_array('admin.reports.receipts_payments', $menu_permission))
+              <li><a class="{{ (request()->is('admin/reports/receipts_payments*')) ? 'active' : '' }}" href="{{ route('admin.reports.receipts_payments') }}"><span>
+                {{ get_phrase('Receipts & Payments Statement') }}
+              </span></a></li>
+              @endif
+              @if(empty($user->menu_permission) || in_array('admin.reports.trial_balance', $menu_permission))
+              <li><a class="{{ (request()->is('admin/reports/trial_balance*')) ? 'active' : '' }}" href="{{ route('admin.reports.trial_balance') }}"><span>
+                {{ get_phrase('Trial Balance') }}
+              </span></a></li>
+              @endif
             </ul>
         </li>
         @endif

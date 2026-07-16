@@ -26,6 +26,11 @@ use App\Models\Routine;
 use App\Models\Syllabus;
 use App\Models\ExpenseCategory;
 use App\Models\Expense;
+use App\Models\AccountHead;
+use App\Models\AccountVoucher;
+use App\Models\AccountVoucherLine;
+use App\Models\Income;
+use App\Services\AccountingService;
 use App\Models\StudentFeeManager;
 use App\Models\Book;
 use App\Models\BookIssue;
@@ -2942,6 +2947,53 @@ class AdminController extends Controller
         }
     }
 
+    private function syncStudentFeeVoucher($invoice, $previousPaidAmount)
+    {
+        $accountingService = new AccountingService();
+
+        if ($invoice->status != 'paid') {
+            $accountingService->voidVoucherFor('student_fee', $invoice->id);
+            return;
+        }
+
+        $delta = $invoice->paid_amount - $previousPaidAmount;
+
+        if ($delta == 0) {
+            return;
+        }
+
+        if ($delta < 0) {
+            $accountingService->voidVoucherFor('student_fee', $invoice->id);
+            if ($invoice->paid_amount <= 0) {
+                return;
+            }
+            $delta = $invoice->paid_amount;
+        }
+
+        $assetHead = $accountingService->resolveAssetHead(auth()->user()->school_id, $invoice->payment_method);
+        $incomeHead = $invoice->account_head_id ? $invoice->account_head_id : optional($accountingService->defaultStudentFeeIncomeHead(auth()->user()->school_id))->id;
+
+        if (!$assetHead || !$incomeHead) {
+            return;
+        }
+
+        $active_session = get_school_settings(auth()->user()->school_id)->value('running_session');
+
+        $accountingService->recordVoucher(
+            auth()->user()->school_id,
+            $active_session,
+            'receipt',
+            date('Y-m-d'),
+            $invoice->title,
+            $assetHead->id,
+            $incomeHead,
+            $delta,
+            'student_fee',
+            $invoice->id,
+            auth()->user()->id
+        );
+    }
+
     public function feeManagerCreate(Request $request, $value="")
     {
         $data = $request->all();
@@ -2973,7 +3025,8 @@ class AdminController extends Controller
             $data['session_id'] = $active_session;
 
 
-            StudentFeeManager::create($data);
+            $invoice = StudentFeeManager::create($data);
+            $this->syncStudentFeeVoucher($invoice, 0);
 
             return redirect()->back()->with('message','You have successfully create a new invoice.');
         } else if($value == 'mass'){
@@ -3007,7 +3060,8 @@ class AdminController extends Controller
                 $parent_id=User::find($data['student_id'])->toArray();
                 $parent_id=$parent_id['parent_id'];
                 $data['parent_id'] = $parent_id;
-                StudentFeeManager::create($data);
+                $invoice = StudentFeeManager::create($data);
+                $this->syncStudentFeeVoucher($invoice, 0);
             }
 
             if (sizeof($enrolments) > 0) {
@@ -3094,6 +3148,8 @@ class AdminController extends Controller
             'session_id' => $active_session,
         ]);
 
+        $this->syncStudentFeeVoucher(StudentFeeManager::find($id), $previous_invoice_data['paid_amount']);
+
         return redirect()->back()->with('message','You have successfully update invoice.');
     }
 
@@ -3155,8 +3211,9 @@ class AdminController extends Controller
 
     public function createExpense()
     {
-        $expense_categories = ExpenseCategory::where('school_id', auth()->user()->school_id)->get();
-        return view('admin.expenses.create', ['expense_categories' => $expense_categories]);
+        $expense_heads = AccountHead::where('school_id', auth()->user()->school_id)->where('type', 'expense')->get();
+        $asset_heads = AccountHead::where('school_id', auth()->user()->school_id)->where('type', 'asset')->get();
+        return view('admin.expenses.create', ['expense_heads' => $expense_heads, 'asset_heads' => $asset_heads]);
     }
 
     public function expenseCreate(Request $request)
@@ -3165,13 +3222,29 @@ class AdminController extends Controller
 
         $active_session = get_school_settings(auth()->user()->school_id)->value('running_session');
 
-        Expense::create([
-            'expense_category_id' => $data['expense_category_id'],
+        $expense = Expense::create([
+            'title' => $data['title'],
+            'account_head_id' => $data['account_head_id'],
+            'payment_account_head_id' => $data['payment_account_head_id'],
             'date' => strtotime($data['date']),
             'amount' => $data['amount'],
             'school_id' => auth()->user()->school_id,
             'session_id' => $active_session,
         ]);
+
+        (new AccountingService())->recordVoucher(
+            auth()->user()->school_id,
+            $active_session,
+            'payment',
+            date('Y-m-d', $expense->date),
+            $expense->title,
+            $data['account_head_id'],
+            $data['payment_account_head_id'],
+            $data['amount'],
+            'expense',
+            $expense->id,
+            auth()->user()->id
+        );
 
         return redirect()->back()->with('message','You have successfully create a new expense.');
     }
@@ -3179,8 +3252,9 @@ class AdminController extends Controller
     public function editExpense($id)
     {
         $expense_details = Expense::find($id);
-        $expense_categories = ExpenseCategory::where('school_id', auth()->user()->school_id)->get();
-        return view('admin.expenses.edit', ['expense_categories' => $expense_categories, 'expense_details' => $expense_details]);
+        $expense_heads = AccountHead::where('school_id', auth()->user()->school_id)->where('type', 'expense')->get();
+        $asset_heads = AccountHead::where('school_id', auth()->user()->school_id)->where('type', 'asset')->get();
+        return view('admin.expenses.edit', ['expense_heads' => $expense_heads, 'asset_heads' => $asset_heads, 'expense_details' => $expense_details]);
     }
 
     public function expenseUpdate(Request $request, $id)
@@ -3190,12 +3264,30 @@ class AdminController extends Controller
         $active_session = get_school_settings(auth()->user()->school_id)->value('running_session');
 
         Expense::where('id', $id)->update([
-            'expense_category_id' => $data['expense_category_id'],
+            'title' => $data['title'],
+            'account_head_id' => $data['account_head_id'],
+            'payment_account_head_id' => $data['payment_account_head_id'],
             'date' => strtotime($data['date']),
             'amount' => $data['amount'],
             'school_id' => auth()->user()->school_id,
             'session_id' => $active_session,
         ]);
+
+        $accountingService = new AccountingService();
+        $accountingService->voidVoucherFor('expense', $id);
+        $accountingService->recordVoucher(
+            auth()->user()->school_id,
+            $active_session,
+            'payment',
+            date('Y-m-d', strtotime($data['date'])),
+            $data['title'],
+            $data['account_head_id'],
+            $data['payment_account_head_id'],
+            $data['amount'],
+            'expense',
+            $id,
+            auth()->user()->id
+        );
 
         return redirect()->back()->with('message','You have successfully update expense.');
     }
@@ -3203,8 +3295,207 @@ class AdminController extends Controller
     public function expenseDelete($id)
     {
         $expense = Expense::find($id);
+        (new AccountingService())->voidVoucherFor('expense', $id);
         $expense->delete();
         return redirect()->back()->with('message','You have successfully delete expense.');
+    }
+
+    public function incomeList(Request $request)
+    {
+        $active_session = get_school_settings(auth()->user()->school_id)->value('running_session');
+
+        if (count($request->all()) > 0) {
+            $data = $request->all();
+            $date = explode('-', $data['eDateRange']);
+            $date_from = strtotime($date[0].' 00:00:00');
+            $date_to = strtotime($date[1].' 23:59:59');
+        } else {
+            $date_from = strtotime(date('d-m-Y', strtotime('first day of this month')).' 00:00:00');
+            $date_to = strtotime(date('d-m-Y', strtotime('last day of this month')).' 23:59:59');
+        }
+
+        $incomes = Income::where('date', '>=', $date_from)
+            ->where('date', '<=', $date_to)
+            ->where('school_id', auth()->user()->school_id)
+            ->where('session_id', $active_session)
+            ->get();
+
+        return view('admin.incomes.income_manager', ['incomes' => $incomes, 'date_from' => $date_from, 'date_to' => $date_to]);
+    }
+
+    public function createIncome()
+    {
+        $income_heads = AccountHead::where('school_id', auth()->user()->school_id)->where('type', 'income')->get();
+        $asset_heads = AccountHead::where('school_id', auth()->user()->school_id)->where('type', 'asset')->get();
+        return view('admin.incomes.create', ['income_heads' => $income_heads, 'asset_heads' => $asset_heads]);
+    }
+
+    public function incomeCreate(Request $request)
+    {
+        $data = $request->all();
+
+        $active_session = get_school_settings(auth()->user()->school_id)->value('running_session');
+
+        $income = Income::create([
+            'title' => $data['title'],
+            'account_head_id' => $data['account_head_id'],
+            'payment_account_head_id' => $data['payment_account_head_id'],
+            'date' => strtotime($data['date']),
+            'amount' => $data['amount'],
+            'school_id' => auth()->user()->school_id,
+            'session_id' => $active_session,
+        ]);
+
+        (new AccountingService())->recordVoucher(
+            auth()->user()->school_id,
+            $active_session,
+            'receipt',
+            date('Y-m-d', $income->date),
+            $income->title,
+            $data['payment_account_head_id'],
+            $data['account_head_id'],
+            $data['amount'],
+            'income',
+            $income->id,
+            auth()->user()->id
+        );
+
+        return redirect()->back()->with('message', 'You have successfully create a new income.');
+    }
+
+    public function editIncome($id)
+    {
+        $income_details = Income::find($id);
+        $income_heads = AccountHead::where('school_id', auth()->user()->school_id)->where('type', 'income')->get();
+        $asset_heads = AccountHead::where('school_id', auth()->user()->school_id)->where('type', 'asset')->get();
+        return view('admin.incomes.edit', ['income_heads' => $income_heads, 'asset_heads' => $asset_heads, 'income_details' => $income_details]);
+    }
+
+    public function incomeUpdate(Request $request, $id)
+    {
+        $data = $request->all();
+
+        $active_session = get_school_settings(auth()->user()->school_id)->value('running_session');
+
+        Income::where('id', $id)->update([
+            'title' => $data['title'],
+            'account_head_id' => $data['account_head_id'],
+            'payment_account_head_id' => $data['payment_account_head_id'],
+            'date' => strtotime($data['date']),
+            'amount' => $data['amount'],
+            'school_id' => auth()->user()->school_id,
+            'session_id' => $active_session,
+        ]);
+
+        $accountingService = new AccountingService();
+        $accountingService->voidVoucherFor('income', $id);
+        $accountingService->recordVoucher(
+            auth()->user()->school_id,
+            $active_session,
+            'receipt',
+            date('Y-m-d', strtotime($data['date'])),
+            $data['title'],
+            $data['payment_account_head_id'],
+            $data['account_head_id'],
+            $data['amount'],
+            'income',
+            $id,
+            auth()->user()->id
+        );
+
+        return redirect()->back()->with('message', 'You have successfully update income.');
+    }
+
+    public function incomeDelete($id)
+    {
+        $income = Income::find($id);
+        (new AccountingService())->voidVoucherFor('income', $id);
+        $income->delete();
+        return redirect()->back()->with('message', 'You have successfully delete income.');
+    }
+
+    public function receiptsPaymentsStatement(Request $request)
+    {
+        $schoolId = auth()->user()->school_id;
+
+        $from = $request->input('from', date('Y-m-01'));
+        $to = $request->input('to', date('Y-m-t'));
+
+        $lines = AccountVoucherLine::whereHas('voucher', function ($query) use ($schoolId, $from, $to) {
+                $query->where('school_id', $schoolId)->whereBetween('voucher_date', [$from, $to]);
+            })
+            ->with(['voucher', 'accountHead'])
+            ->get()
+            ->sortBy(function ($line) { return $line->voucher->voucher_date; });
+
+        $heads = AccountHead::where('school_id', $schoolId)->get();
+
+        $summary = $heads->map(function ($head) use ($from, $to) {
+            $priorMovement = AccountVoucherLine::where('account_head_id', $head->id)
+                ->whereHas('voucher', function ($query) use ($from) {
+                    $query->where('voucher_date', '<', $from);
+                })
+                ->selectRaw('COALESCE(SUM(debit),0) - COALESCE(SUM(credit),0) as net')
+                ->value('net');
+
+            $openingSigned = $head->opening_balance_type == 'debit' ? $head->opening_balance : -$head->opening_balance;
+            $opening = $openingSigned + (float) $priorMovement;
+
+            $periodDebit = AccountVoucherLine::where('account_head_id', $head->id)
+                ->whereHas('voucher', function ($query) use ($from, $to) {
+                    $query->whereBetween('voucher_date', [$from, $to]);
+                })->sum('debit');
+
+            $periodCredit = AccountVoucherLine::where('account_head_id', $head->id)
+                ->whereHas('voucher', function ($query) use ($from, $to) {
+                    $query->whereBetween('voucher_date', [$from, $to]);
+                })->sum('credit');
+
+            $closing = $opening + $periodDebit - $periodCredit;
+
+            return [
+                'head' => $head,
+                'opening' => $opening,
+                'debit' => $periodDebit,
+                'credit' => $periodCredit,
+                'closing' => $closing,
+            ];
+        });
+
+        return view('admin.reports.receipts_payments', ['lines' => $lines, 'summary' => $summary, 'from' => $from, 'to' => $to]);
+    }
+
+    public function trialBalance(Request $request)
+    {
+        $schoolId = auth()->user()->school_id;
+        $asOf = $request->input('as_of', date('Y-m-d'));
+
+        $heads = AccountHead::where('school_id', $schoolId)->where('status', 'active')->get();
+
+        $rows = $heads->map(function ($head) use ($asOf) {
+            $movement = AccountVoucherLine::where('account_head_id', $head->id)
+                ->whereHas('voucher', function ($query) use ($asOf) {
+                    $query->where('voucher_date', '<=', $asOf);
+                })
+                ->selectRaw('COALESCE(SUM(debit),0) as debit, COALESCE(SUM(credit),0) as credit')
+                ->first();
+
+            $openingSigned = $head->opening_balance_type == 'debit' ? $head->opening_balance : -$head->opening_balance;
+            $net = $openingSigned + (float) $movement->debit - (float) $movement->credit;
+
+            return [
+                'head' => $head,
+                'debit' => $net > 0 ? $net : 0,
+                'credit' => $net < 0 ? abs($net) : 0,
+            ];
+        });
+
+        $totals = [
+            'debit' => $rows->sum('debit'),
+            'credit' => $rows->sum('credit'),
+        ];
+
+        return view('admin.reports.trial_balance', ['rows' => $rows, 'totals' => $totals, 'as_of' => $asOf]);
     }
 
 
@@ -3283,6 +3574,68 @@ class AdminController extends Controller
         $expense_category = ExpenseCategory::find($id);
         $expense_category->delete();
         return redirect()->back()->with('message','You have successfully delete expense category.');
+    }
+
+    public function accountHeadList()
+    {
+        $account_heads = AccountHead::where('school_id', auth()->user()->school_id)->paginate(10);
+        return view('admin.account_heads.list', compact('account_heads'));
+    }
+
+    public function createAccountHead()
+    {
+        return view('admin.account_heads.create');
+    }
+
+    public function accountHeadCreate(Request $request)
+    {
+        $data = $request->all();
+
+        AccountHead::create([
+            'school_id' => auth()->user()->school_id,
+            'name' => $data['name'],
+            'type' => $data['type'],
+            'opening_balance' => $data['opening_balance'] ?? 0,
+            'opening_balance_type' => $data['opening_balance_type'] ?? 'debit',
+            'is_system' => false,
+            'status' => 'active',
+        ]);
+
+        return redirect()->back()->with('message', 'You have successfully created a new account head.');
+    }
+
+    public function editAccountHead($id)
+    {
+        $account_head = AccountHead::where('school_id', auth()->user()->school_id)->findOrFail($id);
+        return view('admin.account_heads.edit', ['account_head' => $account_head]);
+    }
+
+    public function accountHeadUpdate(Request $request, $id)
+    {
+        $data = $request->all();
+        $account_head = AccountHead::where('school_id', auth()->user()->school_id)->findOrFail($id);
+
+        $account_head->update([
+            'name' => $data['name'],
+            'type' => $account_head->is_system ? $account_head->type : $data['type'],
+            'opening_balance' => $data['opening_balance'] ?? 0,
+            'opening_balance_type' => $data['opening_balance_type'] ?? 'debit',
+        ]);
+
+        return redirect()->back()->with('message', 'You have successfully updated account head.');
+    }
+
+    public function accountHeadDelete($id)
+    {
+        $account_head = AccountHead::where('school_id', auth()->user()->school_id)->findOrFail($id);
+
+        if ($account_head->is_system) {
+            return redirect()->back()->with('error', 'This is a default account head and cannot be deleted.');
+        }
+
+        $account_head->delete();
+
+        return redirect()->back()->with('message', 'You have successfully deleted account head.');
     }
 
     /**
@@ -3891,15 +4244,16 @@ class AdminController extends Controller
 
     public function update_offline_payment($id,$status)
     {
-       
+
         $amount= StudentFeeManager::find($id)->toArray();
         $amount=$amount['total_amount'];
-        
+
         $studentFeeManager = StudentFeeManager::find($id);
+        $previous_paid_amount = $studentFeeManager->paid_amount;
         $students_id = User::find($studentFeeManager->student_id);
         $student_email = $students_id->email;
         $parents_id = User::find($studentFeeManager->parent_id);
-        
+
         if (!empty($parents_id)) {
           $parents_email = $parents_id->email;
         }
@@ -3912,15 +4266,17 @@ class AdminController extends Controller
                 'paid_amount' =>$amount,
                 'payment_method' => 'offline']);
 
+            $this->syncStudentFeeVoucher(StudentFeeManager::find($id), $previous_paid_amount);
+
             if(!empty(get_settings('smtp_user')) && (get_settings('smtp_pass')) && (get_settings('smtp_host')) && (get_settings('smtp_port'))){
                 if (!empty($parents_id)) {
-                    Mail::to($student_email)->send(new StudentsEmail($studentFeeManager));   
-                    Mail::to($parents_email)->send(new StudentsEmail($studentFeeManager)); 
+                    Mail::to($student_email)->send(new StudentsEmail($studentFeeManager));
+                    Mail::to($parents_email)->send(new StudentsEmail($studentFeeManager));
                 }else{
                     Mail::to($student_email)->send(new StudentsEmail($studentFeeManager));
                 }
             }
-                  
+
                 return redirect()->back()->with('message','Payment Approved');
         }
         elseif($status=='decline')
@@ -3930,6 +4286,8 @@ class AdminController extends Controller
                 'updated_at'=>date("Y-m-d H:i:s"),
                 'paid_amount' =>$amount,
                 'payment_method' => 'offline']);
+
+            $this->syncStudentFeeVoucher(StudentFeeManager::find($id), $previous_paid_amount);
 
                 return redirect()->back()->with('message','Payment Decline');
 
