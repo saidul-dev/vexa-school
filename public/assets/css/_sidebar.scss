@@ -217,7 +217,9 @@ $sidebar_width: 223px;
   color: #fff;
   font-size: 13px;
   padding: 5px 0;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.3;
   opacity: 0.6;
   transition: all 0.3s ease;
 }
