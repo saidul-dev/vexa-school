@@ -30,17 +30,17 @@
                 <div class="row">
                     <div class="row justify-content-md-center">
 
-                        @if(isset($selected_category) && $selected_category != "")
+                        @if(isset($selected_head) && $selected_head != "")
                             <div class="col-xl-3 mb-3">
                                 <input type="text" class="form-control eForm-control" name="eDateRange"
                                     value="{{ date('m/d/Y', $date_from).' - '.date('m/d/Y', $date_to) }}" />
                             </div>
 
                             <div class="col-xl-4 mb-3">
-                                <select class="form-select eForm-select eChoice-multiple-with-remove" name="expense_category_id" id="expense_category_id">
-                                    <option value="all">{{ get_phrase('Expense category') }}</option>
-                                    @foreach ($expense_categories as $expense_category)
-                                        <option value="{{ $expense_category->id }}" {{ $selected_category->id == $expense_category->id ?  'selected':'' }}>{{ $expense_category->name }}</option>
+                                <select class="form-select eForm-select eChoice-multiple-with-remove" name="account_head_id" id="account_head_id">
+                                    <option value="all">{{ get_phrase('Expense head') }}</option>
+                                    @foreach ($account_heads as $account_head)
+                                        <option value="{{ $account_head->id }}" {{ $selected_head->id == $account_head->id ?  'selected':'' }}>{{ $account_head->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -51,10 +51,10 @@
                             </div>
 
                             <div class="col-xl-4 mb-3">
-                                <select class="form-select eForm-select eChoice-multiple-with-remove" name="expense_category_id" id="expense_category_id">
-                                    <option value="all">{{ get_phrase('Select expense category') }}</option>
-                                    @foreach ($expense_categories as $expense_category)
-                                        <option value="{{ $expense_category->id }}">{{ $expense_category->name }}</option>
+                                <select class="form-select eForm-select eChoice-multiple-with-remove" name="account_head_id" id="account_head_id">
+                                    <option value="all">{{ get_phrase('Select expense head') }}</option>
+                                    @foreach ($account_heads as $account_head)
+                                        <option value="{{ $account_head->id }}">{{ $account_head->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

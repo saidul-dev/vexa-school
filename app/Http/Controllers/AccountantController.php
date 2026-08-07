@@ -451,25 +451,25 @@ class AccountantController extends Controller
             $date = explode('-', $data['eDateRange']);
             $date_from = strtotime($date[0].' 00:00:00');
             $date_to  = strtotime($date[1].' 23:59:59');
-            $expense_category_id = $data['expense_category_id'];
+            $account_head_id = $data['account_head_id'];
 
-            $expense_categories = ExpenseCategory::where('school_id', auth()->user()->school_id)->get();
-            $selected_category = ExpenseCategory::find($expense_category_id);
-            if($expense_category_id != 'all'){
-                $expenses = Expense::where('date', '>=', $date_from)->where('date', '<=', $date_to)->where(['expense_category_id' => $expense_category_id, 'school_id' => auth()->user()->school_id])->get();
+            $account_heads = AccountHead::where('school_id', auth()->user()->school_id)->where('type', 'expense')->get();
+            $selected_head = AccountHead::find($account_head_id);
+            if($account_head_id != 'all'){
+                $expenses = Expense::where('date', '>=', $date_from)->where('date', '<=', $date_to)->where(['account_head_id' => $account_head_id, 'school_id' => auth()->user()->school_id])->get();
             } else {
                 $expenses = Expense::where('date', '>=', $date_from)->where('date', '<=', $date_to)->where('school_id', auth()->user()->school_id)->get();
             }
 
-            return view('accountant.expenses.expense_manager', ['expense_categories' => $expense_categories, 'expenses' => $expenses, 'selected_category' => $selected_category, 'date_from' => $date_from, 'date_to' => $date_to]);
+            return view('accountant.expenses.expense_manager', ['account_heads' => $account_heads, 'expenses' => $expenses, 'selected_head' => $selected_head, 'date_from' => $date_from, 'date_to' => $date_to]);
 
         } else {
-            $expense_categories = ExpenseCategory::where('school_id', auth()->user()->school_id)->get();
+            $account_heads = AccountHead::where('school_id', auth()->user()->school_id)->where('type', 'expense')->get();
             $date_from = strtotime(date('d-m-Y',strtotime('first day of this month')).' 00:00:00');
             $date_to = strtotime(date('d-m-Y',strtotime('last day of this month')).' 23:59:59');
             $expenses = Expense::where('date', '>=', $date_from)->where('date', '<=', $date_to)->where('school_id', auth()->user()->school_id)->get();
-            $selected_category = "";
-            return view('accountant.expenses.expense_manager', ['expense_categories' => $expense_categories, 'expenses' => $expenses, 'selected_category' => $selected_category, 'date_from' => $date_from, 'date_to' => $date_to]);
+            $selected_head = "";
+            return view('accountant.expenses.expense_manager', ['account_heads' => $account_heads, 'expenses' => $expenses, 'selected_head' => $selected_head, 'date_from' => $date_from, 'date_to' => $date_to]);
         }
     }
 
