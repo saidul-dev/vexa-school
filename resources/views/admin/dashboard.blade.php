@@ -205,6 +205,19 @@
 			foreach($monthly_incomes as $monthly_income):
 				$total_income += $monthly_income->total_amount;
 			endforeach;
+
+			$income_trend = [];
+			for ($m = 5; $m >= 0; $m--) {
+				$monthStart = strtotime(date('Y-m-01', strtotime("-{$m} months")));
+				$monthEnd = strtotime(date('Y-m-t', strtotime("-{$m} months")));
+				$monthTotal = DB::table('student_fee_managers')
+					->where('school_id', auth()->user()->school_id)
+					->where('status', 'paid')
+					->where('timestamp', '>=', $monthStart)
+					->where('timestamp', '<=', $monthEnd)
+					->sum('total_amount');
+				$income_trend[] = ['month' => date('M', $monthStart), 'amount' => (float) $monthTotal];
+			}
 		  @endphp
 
 	      <div class="col-lg-6 col-md-6">
@@ -251,7 +264,9 @@
 	              </ul>
 	            </div>
 	          </div>
-	          <div class="ds_report_list"></div>
+	          <div class="ds_report_list">
+				<div id="incomechartdiv" class="chartdiv"></div>
+			  </div>
 	        </div>
 	      </div>
 	      <!-- Upcoming Events -->
@@ -470,6 +485,83 @@ series.appear(1000);
 chart.appear(1000, 100);
 
 }); // end am5.ready()
+
+am5.ready(function() {
+
+var incomeRoot = am5.Root.new("incomechartdiv");
+
+incomeRoot.setThemes([
+  am5themes_Animated.new(incomeRoot)
+]);
+
+var incomeChart = incomeRoot.container.children.push(am5xy.XYChart.new(incomeRoot, {
+  panX: false,
+  panY: false,
+  wheelX: "none",
+  wheelY: "none"
+}));
+
+var incomeCursor = incomeChart.set("cursor", am5xy.XYCursor.new(incomeRoot, {}));
+incomeCursor.lineY.set("visible", false);
+
+var incomeXRenderer = am5xy.AxisRendererX.new(incomeRoot, { minGridDistance: 30 });
+incomeXRenderer.labels.template.setAll({
+  fill: am5.color(0x0A1C3A)
+});
+incomeXRenderer.grid.template.setAll({
+  stroke: am5.color(0x0A1C3A),
+  strokeOpacity: 0.08
+});
+
+var incomeXAxis = incomeChart.xAxes.push(am5xy.CategoryAxis.new(incomeRoot, {
+  maxDeviation: 0.3,
+  categoryField: "month",
+  renderer: incomeXRenderer,
+  tooltip: am5.Tooltip.new(incomeRoot, {})
+}));
+
+var incomeYRenderer = am5xy.AxisRendererY.new(incomeRoot, {});
+incomeYRenderer.labels.template.setAll({
+  fill: am5.color(0x0A1C3A)
+});
+incomeYRenderer.grid.template.setAll({
+  stroke: am5.color(0x0A1C3A),
+  strokeOpacity: 0.08
+});
+
+var incomeYAxis = incomeChart.yAxes.push(am5xy.ValueAxis.new(incomeRoot, {
+  maxDeviation: 0.3,
+  renderer: incomeYRenderer
+}));
+
+var incomeSeries = incomeChart.series.push(am5xy.ColumnSeries.new(incomeRoot, {
+  name: "Income",
+  xAxis: incomeXAxis,
+  yAxis: incomeYAxis,
+  valueYField: "amount",
+  categoryXField: "month",
+  fill: am5.color(0x06B6D4),
+  stroke: am5.color(0x0891B2),
+  tooltip: am5.Tooltip.new(incomeRoot, {
+    labelText: "{valueY}"
+  })
+}));
+
+incomeSeries.columns.template.setAll({
+  cornerRadiusTL: 5,
+  cornerRadiusTR: 5,
+  fillOpacity: 0.9
+});
+
+var incomeData = <?php echo json_encode($income_trend); ?>;
+
+incomeXAxis.data.setAll(incomeData);
+incomeSeries.data.setAll(incomeData);
+
+incomeSeries.appear(1000);
+incomeChart.appear(1000, 100);
+
+}); // end income am5.ready()
 </script>
 
 <!-- HTML -->
