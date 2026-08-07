@@ -1,0 +1,171 @@
+/* Admin panel theme override — dark blue + cyan brand
+   Scoped to admin.navigation only; does not touch the shared
+   main.css/style.css used by other role panels. */
+
+/* ===== Sidebar ===== */
+.sidebar {
+    background: linear-gradient(180deg, #0A1C3A 0%, #0F2B4D 100%);
+}
+
+.sidebar .nav-links > li.showMenu {
+    background-color: rgba(6, 182, 212, 0.08);
+}
+
+.sidebar .nav-links > li .iocn-link:hover {
+    background-color: rgba(6, 182, 212, 0.06);
+}
+
+.sidebar .nav-links > li .iocn-link::before,
+.sidebar .nav-links > li.showMenu .iocn-link::before {
+    background-color: #06B6D4;
+}
+
+.sidebar .nav-links > li.showMenu .iocn-link a .sidebar_icon svg,
+.sidebar .nav-links > li .sMenu-title .sidebar_icon svg {
+    fill: #06B6D4;
+    color: #06B6D4;
+}
+
+.sidebar .nav-links > li .iocn-link:hover a i,
+.sidebar .nav-links > li .iocn-link:hover a svg {
+    fill: #06B6D4;
+}
+
+.sidebar .nav-links > li .sub-menu a.active,
+.sidebar .nav-links > li .sub-menu a:hover {
+    color: #06B6D4 !important;
+    opacity: 1;
+}
+
+.sidebar .nav-links > li .sub-menu {
+    background: transparent;
+}
+
+.sidebar .nav-links > li .sub-menu li a {
+    padding: 10px 0;
+}
+
+.sidebar .nav-links > li .sub-menu li:not(:last-child) {
+    margin-bottom: 4px;
+}
+
+.sidebar .logo-details {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ===== Top header buttons ===== */
+.btn-outline-primary {
+    color: #06B6D4 !important;
+    border-color: #06B6D4 !important;
+    border-radius: 30px !important;
+    font-weight: 600 !important;
+    padding: 8px 20px !important;
+    transition: .3s;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background: linear-gradient(135deg, #0A1C3A 0%, #06B6D4 100%) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+
+/* ===== Primary action buttons (forms, CRUD) ===== */
+.btn-primary,
+.eBtn-blue {
+    background: linear-gradient(135deg, #0A1C3A 0%, #06B6D4 100%) !important;
+    border-color: transparent !important;
+    transition: .3s;
+}
+
+.btn-primary:hover,
+.eBtn-blue:hover {
+    opacity: .92;
+    transform: translateY(-1px);
+}
+
+.eBtn-outline-blue {
+    color: #06B6D4;
+    border-color: #06B6D4;
+}
+
+.btn-light-primary {
+    background-color: rgba(6, 182, 212, 0.12) !important;
+    border-color: rgba(6, 182, 212, 0.12) !important;
+    color: #0891B2 !important;
+}
+
+.btn-light-primary:hover {
+    background: linear-gradient(135deg, #0A1C3A 0%, #06B6D4 100%) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+
+/* ===== Dashboard stat cards ===== */
+.dashboard_ShortListItem {
+    border: 1px solid #EEF1F6;
+    box-shadow: none;
+    transition: .3s;
+}
+
+.dashboard_ShortListItem:hover {
+    box-shadow: 0 14px 30px rgba(10, 28, 58, 0.1);
+    transform: translateY(-3px);
+}
+
+.dsHeader .ds_link {
+    background-color: rgba(6, 182, 212, 0.12);
+}
+
+.dsHeader .ds_link svg path {
+    fill: #06B6D4 !important;
+}
+
+.dsBody .total_no {
+    color: #0A1C3A;
+}
+
+/* ===== Attendance / Income / Upcoming Events report cards =====
+   Unify the old blue/green/pink flat cards into the brand gradient. */
+.dashboard_attendance,
+.dashboard_income_report,
+.dashboard_upcoming_events {
+    background: linear-gradient(135deg, #0A1C3A 0%, #06B6D4 100%) !important;
+}
+
+.ds_attend_percent {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.all_report_btn {
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.all_report_btn:hover {
+    background-color: #fff;
+    border-color: #fff;
+    color: #0A1C3A !important;
+}
+
+.upcoming_events_items > li::before {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.upcoming_events_item .events_info .date {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.all_report_btn_2 {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.all_report_btn_2:hover {
+    background-color: #fff;
+    border-color: #fff;
+    color: #0A1C3A;
+}
+
+.verticalMenu .eBtn svg path {
+    fill: rgba(255, 255, 255, 0.7) !important;
+}

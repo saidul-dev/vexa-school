@@ -36,6 +36,7 @@ use App\Models\User;
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/admin-theme.css') }}" />
     <!-- Datepicker css -->
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.css') }}" />
     <!-- Select2 css -->

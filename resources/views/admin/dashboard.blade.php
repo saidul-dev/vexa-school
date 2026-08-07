@@ -403,7 +403,12 @@ xRenderer.labels.template.setAll({
   rotation: -90,
   centerY: am5.p50,
   centerX: am5.p100,
-  paddingRight: 15
+  paddingRight: 15,
+  fill: am5.color(0xffffff)
+});
+xRenderer.grid.template.setAll({
+  stroke: am5.color(0xffffff),
+  strokeOpacity: 0.15
 });
 
 var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
@@ -413,9 +418,18 @@ var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
   tooltip: am5.Tooltip.new(root, {})
 }));
 
+var yRenderer = am5xy.AxisRendererY.new(root, {});
+yRenderer.labels.template.setAll({
+  fill: am5.color(0xffffff)
+});
+yRenderer.grid.template.setAll({
+  stroke: am5.color(0xffffff),
+  strokeOpacity: 0.15
+});
+
 var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
   maxDeviation: 0.3,
-  renderer: am5xy.AxisRendererY.new(root, {})
+  renderer: yRenderer
 }));
 
 
@@ -427,18 +441,19 @@ var series = chart.series.push(am5xy.ColumnSeries.new(root, {
   valueYField: "today_attended",
   sequencedInterpolation: true,
   categoryXField: "class_name",
+  fill: am5.color(0xffffff),
+  stroke: am5.color(0xffffff),
   tooltip: am5.Tooltip.new(root, {
     labelText:"{valueY}"
   })
 }));
 
-series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5 });
-series.columns.template.adapters.add("fill", function(fill, target) {
-  return chart.get("colors").getIndex(series.columns.indexOf(target));
-});
-
-series.columns.template.adapters.add("stroke", function(stroke, target) {
-  return chart.get("colors").getIndex(series.columns.indexOf(target));
+series.columns.template.setAll({
+  cornerRadiusTL: 5,
+  cornerRadiusTR: 5,
+  fill: am5.color(0xffffff),
+  fillOpacity: 0.85,
+  stroke: am5.color(0xffffff)
 });
 
 
