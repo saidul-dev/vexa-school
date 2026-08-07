@@ -136,7 +136,10 @@ $(".menuList").on("click", function () {
 $(".closeIcon").on("click", function () {
   $(".sidebar").removeClass("close");
 });
-$(".nav-links-li").on("click", function () {
+$(".nav-links-li").on("click", function (e) {
+  if ($(e.target).closest(".sub-menu").length) {
+    return;
+  }
   $(this).toggleClass("showMenu");
   $(".nav-links-li").not($(this)).removeClass("showMenu");
 });
