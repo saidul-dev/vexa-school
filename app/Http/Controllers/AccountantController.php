@@ -688,7 +688,7 @@ class AccountantController extends Controller
         $lines = AccountVoucherLine::whereHas('voucher', function ($query) use ($schoolId, $from, $to) {
                 $query->where('school_id', $schoolId)->whereBetween('voucher_date', [$from, $to]);
             })
-            ->with(['voucher', 'accountHead'])
+            ->with(['voucher.recordedBy', 'accountHead'])
             ->get()
             ->sortBy(function ($line) { return $line->voucher->voucher_date; });
 
@@ -720,13 +720,29 @@ class AccountantController extends Controller
             return [
                 'head' => $head,
                 'opening' => $opening,
+                'opening_debit' => $opening > 0 ? $opening : 0,
+                'opening_credit' => $opening < 0 ? abs($opening) : 0,
                 'debit' => $periodDebit,
                 'credit' => $periodCredit,
                 'closing' => $closing,
+                'closing_debit' => $closing > 0 ? $closing : 0,
+                'closing_credit' => $closing < 0 ? abs($closing) : 0,
             ];
         });
 
-        return view('accountant.reports.receipts_payments', ['lines' => $lines, 'summary' => $summary, 'from' => $from, 'to' => $to]);
+        $school = get_school_settings($schoolId)->first();
+
+        $totals = [
+            'transactions' => $lines->count(),
+            'debit' => $lines->sum('debit'),
+            'credit' => $lines->sum('credit'),
+            'opening_debit' => $summary->sum('opening_debit'),
+            'opening_credit' => $summary->sum('opening_credit'),
+            'closing_debit' => $summary->sum('closing_debit'),
+            'closing_credit' => $summary->sum('closing_credit'),
+        ];
+
+        return view('accountant.reports.receipts_payments', ['lines' => $lines, 'summary' => $summary, 'from' => $from, 'to' => $to, 'school' => $school, 'totals' => $totals]);
     }
 
     public function trialBalance(Request $request)

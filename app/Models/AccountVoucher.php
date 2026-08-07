@@ -17,4 +17,9 @@ class AccountVoucher extends Model
     {
         return $this->hasMany(AccountVoucherLine::class, 'voucher_id');
     }
+
+    public function recordedBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }
