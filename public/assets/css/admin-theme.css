@@ -126,46 +126,75 @@
 }
 
 /* ===== Attendance / Income / Upcoming Events report cards =====
-   Unify the old blue/green/pink flat cards into the brand gradient. */
+   Light brand-tinted cards instead of the old flat blue/green/pink. */
 .dashboard_attendance,
 .dashboard_income_report,
 .dashboard_upcoming_events {
-    background: linear-gradient(135deg, #0A1C3A 0%, #06B6D4 100%) !important;
+    background: #F2FBFD !important;
+    border: 1px solid #DCF1F6;
+    box-shadow: none;
 }
 
-.ds_attend_percent {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.all_report_btn {
-    border-color: rgba(255, 255, 255, 0.4);
-}
-
-.all_report_btn:hover {
-    background-color: #fff;
-    border-color: #fff;
-    color: #0A1C3A !important;
-}
-
-.upcoming_events_items > li::before {
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-.upcoming_events_item .events_info .date {
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.all_report_btn_2 {
-    background-color: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.4);
-}
-
-.all_report_btn_2:hover {
-    background-color: #fff;
-    border-color: #fff;
+.dashboard_attendance .ds_report_left .title,
+.dashboard_income_report .ds_report_left .title,
+.dashboard_upcoming_events .ds_report_left .title {
     color: #0A1C3A;
 }
 
+.dashboard_attendance .ds_report_count .total_no,
+.dashboard_income_report .ds_report_count .total_no,
+.dashboard_upcoming_events .ds_report_count .total_no {
+    color: #0A1C3A;
+}
+
+.ds_attend_percent {
+    background-color: rgba(6, 182, 212, 0.14);
+}
+
+.ds_attend_percent span {
+    color: #0891B2;
+}
+
+.ds_attend_percent .icon svg path {
+    stroke: #0891B2;
+    fill: #0891B2;
+}
+
+.all_report_btn {
+    color: #0A1C3A;
+    border-color: #0A1C3A;
+}
+
+.all_report_btn:hover {
+    background: linear-gradient(135deg, #0A1C3A 0%, #06B6D4 100%);
+    border-color: transparent;
+    color: #fff !important;
+}
+
+.upcoming_events_items > li::before {
+    background-color: #06B6D4;
+}
+
+.upcoming_events_item .events_info .title {
+    color: #0A1C3A;
+}
+
+.upcoming_events_item .events_info .date {
+    color: #797c8b;
+}
+
+.all_report_btn_2 {
+    background-color: rgba(6, 182, 212, 0.14);
+    border-color: rgba(6, 182, 212, 0.14);
+    color: #0891B2;
+}
+
+.all_report_btn_2:hover {
+    background: linear-gradient(135deg, #0A1C3A 0%, #06B6D4 100%);
+    border-color: transparent;
+    color: #fff;
+}
+
 .verticalMenu .eBtn svg path {
-    fill: rgba(255, 255, 255, 0.7) !important;
+    fill: #797c8b !important;
 }

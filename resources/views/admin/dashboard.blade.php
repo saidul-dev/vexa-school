@@ -195,8 +195,102 @@
 	          </div>
 	        </div>
 	      </div>
+	      <!-- Imcome Report -->
+
+		  @php
+		  	$total_income = 0;
+		  	$first_day_of_this_month = strtotime(date('1 M Y', time()));
+		  	$last_day_of_this_month = strtotime(date('Y-m-t', time()));
+			$monthly_incomes = DB::table('student_fee_managers')->where('school_id', auth()->user()->school_id)->where('status', 'paid')->where('timestamp', '>=', $first_day_of_this_month)->where('timestamp', '<=', $last_day_of_this_month)->get();
+			foreach($monthly_incomes as $monthly_income):
+				$total_income += $monthly_income->total_amount;
+			endforeach;
+		  @endphp
+
+	      <div class="col-lg-6 col-md-6">
+	        <div class="dashboard_report dashboard_income_report">
+	          <div
+	            class="ds_report_header d-flex justify-content-between align-items-start"
+	          >
+	            <div class="ds_report_left">
+	              <h4 class="title">{{ get_phrase('Income Report') }}</h4>
+	              <div
+	                class="ds_report_count d-flex align-items-center"
+	              >
+	                <span class="total_no">{{ currency($total_income) }}</span>
+	              </div>
+	            </div>
+	            <div class="verticalMenu">
+	              <button
+	                type="button"
+	                class="eBtn dropdown-toggle"
+	                data-bs-toggle="dropdown"
+	                aria-expanded="false"
+	              >
+	                <svg
+	                  xmlns="http://www.w3.org/2000/svg"
+	                  width="5"
+	                  height="20.999"
+	                  viewBox="0 0 5 20.999"
+	                >
+	                  <path
+	                    id="Union_6"
+	                    data-name="Union 6"
+	                    d="M-4856,309.5a2.5,2.5,0,0,1,2.5-2.5,2.5,2.5,0,0,1,2.5,2.5,2.5,2.5,0,0,1-2.5,2.5A2.5,2.5,0,0,1-4856,309.5Zm0-8a2.5,2.5,0,0,1,2.5-2.5,2.5,2.5,0,0,1,2.5,2.5,2.5,2.5,0,0,1-2.5,2.5A2.5,2.5,0,0,1-4856,301.5Zm0-8a2.5,2.5,0,0,1,2.5-2.5,2.5,2.5,0,0,1,2.5,2.5,2.5,2.5,0,0,1-2.5,2.5A2.5,2.5,0,0,1-4856,293.5Z"
+	                    transform="translate(4856 -291)"
+	                    fill="#cffbe3"
+	                  />
+	                </svg>
+	              </button>
+	              <ul
+	                class="dropdown-menu dropdown-menu-end eDropdown-menu-2"
+	              >
+	                <li><a class="dropdown-item" href="#">{{ get_phrase('Year') }}</a></li>
+	                <li><a class="dropdown-item" href="#">{{ get_phrase('Month') }}</a></li>
+	                <li><a class="dropdown-item" href="#">{{ get_phrase('Week') }}</a></li>
+	              </ul>
+	            </div>
+	          </div>
+	          <div class="ds_report_list"></div>
+	        </div>
+	      </div>
+	      <!-- Upcoming Events -->
+	      <div class="col-lg-6 col-md-6">
+	        <div class="dashboard_report dashboard_upcoming_events">
+	          <div
+	            class="ds_report_header d-flex justify-content-between align-items-start"
+	          >
+	            <div class="ds_report_left">
+	              <h4 class="title">{{ get_phrase('Upcoming Events') }}</h4>
+	            </div>
+	            
+	          </div>
+	          <div class="ds_report_list pt-38">
+	            <ul class="upcoming_events_items d-flex flex-column">
+
+					@php $upcoming_events = DB::table('frontend_events')->where('school_id', auth()->user()->school_id)->where('timestamp', '>', time())->where('status', 1)->take(3)->orderBy('id', 'DESC')->get(); @endphp
+					@foreach($upcoming_events as $upcoming_event)
+					<li>
+						<div
+						class="upcoming_events_item d-flex justify-content-between align-items-start"
+						>
+						<div class="events_info">
+							<a href="#" class="title">{{ $upcoming_event->title }}</a>
+							<p class="date">{{ date('D, M d Y', $upcoming_event->timestamp) }}</p>
+						</div>
+						
+						</div>
+					</li>
+					@endforeach
+	            </ul>
+	            <div class="text-end">
+	              <a href="{{route('admin.events.list')}}" class="all_report_btn_2">{{ get_phrase('See all') }}</a>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
 	      <!-- Attendance -->
-	      <div class="col-lg-4">
+	      <div class="col-12">
 	        <div class="dashboard_report dashboard_attendance">
 	          <div class="ds_report_header d-flex justify-content-between align-items-start">
 	            <div class="ds_report_left">
@@ -262,100 +356,6 @@
 			  </div>
 	        </div>
 	      </div>
-	      <!-- Imcome Report -->
-
-		  @php
-		  	$total_income = 0;
-		  	$first_day_of_this_month = strtotime(date('1 M Y', time()));
-		  	$last_day_of_this_month = strtotime(date('Y-m-t', time()));
-			$monthly_incomes = DB::table('student_fee_managers')->where('school_id', auth()->user()->school_id)->where('status', 'paid')->where('timestamp', '>=', $first_day_of_this_month)->where('timestamp', '<=', $last_day_of_this_month)->get();
-			foreach($monthly_incomes as $monthly_income):
-				$total_income += $monthly_income->total_amount;
-			endforeach;
-		  @endphp
-
-	      <div class="col-lg-4 col-md-6">
-	        <div class="dashboard_report dashboard_income_report">
-	          <div
-	            class="ds_report_header d-flex justify-content-between align-items-start"
-	          >
-	            <div class="ds_report_left">
-	              <h4 class="title">{{ get_phrase('Income Report') }}</h4>
-	              <div
-	                class="ds_report_count d-flex align-items-center"
-	              >
-	                <span class="total_no">{{ currency($total_income) }}</span>
-	              </div>
-	            </div>
-	            <div class="verticalMenu">
-	              <button
-	                type="button"
-	                class="eBtn dropdown-toggle"
-	                data-bs-toggle="dropdown"
-	                aria-expanded="false"
-	              >
-	                <svg
-	                  xmlns="http://www.w3.org/2000/svg"
-	                  width="5"
-	                  height="20.999"
-	                  viewBox="0 0 5 20.999"
-	                >
-	                  <path
-	                    id="Union_6"
-	                    data-name="Union 6"
-	                    d="M-4856,309.5a2.5,2.5,0,0,1,2.5-2.5,2.5,2.5,0,0,1,2.5,2.5,2.5,2.5,0,0,1-2.5,2.5A2.5,2.5,0,0,1-4856,309.5Zm0-8a2.5,2.5,0,0,1,2.5-2.5,2.5,2.5,0,0,1,2.5,2.5,2.5,2.5,0,0,1-2.5,2.5A2.5,2.5,0,0,1-4856,301.5Zm0-8a2.5,2.5,0,0,1,2.5-2.5,2.5,2.5,0,0,1,2.5,2.5,2.5,2.5,0,0,1-2.5,2.5A2.5,2.5,0,0,1-4856,293.5Z"
-	                    transform="translate(4856 -291)"
-	                    fill="#cffbe3"
-	                  />
-	                </svg>
-	              </button>
-	              <ul
-	                class="dropdown-menu dropdown-menu-end eDropdown-menu-2"
-	              >
-	                <li><a class="dropdown-item" href="#">{{ get_phrase('Year') }}</a></li>
-	                <li><a class="dropdown-item" href="#">{{ get_phrase('Month') }}</a></li>
-	                <li><a class="dropdown-item" href="#">{{ get_phrase('Week') }}</a></li>
-	              </ul>
-	            </div>
-	          </div>
-	          <div class="ds_report_list"></div>
-	        </div>
-	      </div>
-	      <!-- Upcoming Events -->
-	      <div class="col-lg-4 col-md-6">
-	        <div class="dashboard_report dashboard_upcoming_events">
-	          <div
-	            class="ds_report_header d-flex justify-content-between align-items-start"
-	          >
-	            <div class="ds_report_left">
-	              <h4 class="title">{{ get_phrase('Upcoming Events') }}</h4>
-	            </div>
-	            
-	          </div>
-	          <div class="ds_report_list pt-38">
-	            <ul class="upcoming_events_items d-flex flex-column">
-
-					@php $upcoming_events = DB::table('frontend_events')->where('school_id', auth()->user()->school_id)->where('timestamp', '>', time())->where('status', 1)->take(3)->orderBy('id', 'DESC')->get(); @endphp
-					@foreach($upcoming_events as $upcoming_event)
-					<li>
-						<div
-						class="upcoming_events_item d-flex justify-content-between align-items-start"
-						>
-						<div class="events_info">
-							<a href="#" class="title">{{ $upcoming_event->title }}</a>
-							<p class="date">{{ date('D, M d Y', $upcoming_event->timestamp) }}</p>
-						</div>
-						
-						</div>
-					</li>
-					@endforeach
-	            </ul>
-	            <div class="text-end">
-	              <a href="{{route('admin.events.list')}}" class="all_report_btn_2">{{ get_phrase('See all') }}</a>
-	            </div>
-	          </div>
-	        </div>
-	      </div>
 	    </div>
 	  </div>
 	</div>
@@ -404,11 +404,11 @@ xRenderer.labels.template.setAll({
   centerY: am5.p50,
   centerX: am5.p100,
   paddingRight: 15,
-  fill: am5.color(0xffffff)
+  fill: am5.color(0x0A1C3A)
 });
 xRenderer.grid.template.setAll({
-  stroke: am5.color(0xffffff),
-  strokeOpacity: 0.15
+  stroke: am5.color(0x0A1C3A),
+  strokeOpacity: 0.08
 });
 
 var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
@@ -420,11 +420,11 @@ var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
 
 var yRenderer = am5xy.AxisRendererY.new(root, {});
 yRenderer.labels.template.setAll({
-  fill: am5.color(0xffffff)
+  fill: am5.color(0x0A1C3A)
 });
 yRenderer.grid.template.setAll({
-  stroke: am5.color(0xffffff),
-  strokeOpacity: 0.15
+  stroke: am5.color(0x0A1C3A),
+  strokeOpacity: 0.08
 });
 
 var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
@@ -441,8 +441,8 @@ var series = chart.series.push(am5xy.ColumnSeries.new(root, {
   valueYField: "today_attended",
   sequencedInterpolation: true,
   categoryXField: "class_name",
-  fill: am5.color(0xffffff),
-  stroke: am5.color(0xffffff),
+  fill: am5.color(0x06B6D4),
+  stroke: am5.color(0x06B6D4),
   tooltip: am5.Tooltip.new(root, {
     labelText:"{valueY}"
   })
@@ -451,9 +451,9 @@ var series = chart.series.push(am5xy.ColumnSeries.new(root, {
 series.columns.template.setAll({
   cornerRadiusTL: 5,
   cornerRadiusTR: 5,
-  fill: am5.color(0xffffff),
-  fillOpacity: 0.85,
-  stroke: am5.color(0xffffff)
+  fill: am5.color(0x06B6D4),
+  fillOpacity: 0.9,
+  stroke: am5.color(0x0891B2)
 });
 
 
