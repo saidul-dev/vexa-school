@@ -45,10 +45,10 @@
 	  <div class="eSection-dashboardItems">
 	    <div class="row flex-wrap">
 	      <!-- Dashboard Short Details -->
-	      <div class="col-lg-6">
+	      <div class="col-12">
 	        <div class="dashboard_ShortListItems">
 	          <div class="row">
-	            <div class="col-md-6">
+	            <div class="col-lg-3 col-md-6">
 	              <div class="dashboard_ShortListItem">
 	                <div
 	                  class="dsHeader d-flex justify-content-between align-items-center"
@@ -87,7 +87,7 @@
 	                </div>
 	              </div>
 	            </div>
-	            <div class="col-md-6">
+	            <div class="col-lg-3 col-md-6">
 	              <div class="dashboard_ShortListItem">
 	                <div
 	                  class="dsHeader d-flex justify-content-between align-items-center"
@@ -126,7 +126,7 @@
 	                </div>
 	              </div>
 	            </div>
-	            <div class="col-md-6">
+	            <div class="col-lg-3 col-md-6">
 	              <div class="dashboard_ShortListItem">
 	                <div
 	                  class="dsHeader d-flex justify-content-between align-items-center"
@@ -165,7 +165,7 @@
 	                </div>
 	              </div>
 	            </div>
-	            <div class="col-md-6">
+	            <div class="col-lg-3 col-md-6">
 	              <div class="dashboard_ShortListItem">
 	                <div
 	                  class="dsHeader d-flex justify-content-between align-items-center"
@@ -196,7 +196,7 @@
 	        </div>
 	      </div>
 	      <!-- Attendance -->
-	      <div class="col-lg-6">
+	      <div class="col-lg-4">
 	        <div class="dashboard_report dashboard_attendance">
 	          <div class="ds_report_header d-flex justify-content-between align-items-start">
 	            <div class="ds_report_left">
@@ -274,7 +274,7 @@
 			endforeach;
 		  @endphp
 
-	      <div class="col-lg-7 col-md-6">
+	      <div class="col-lg-4 col-md-6">
 	        <div class="dashboard_report dashboard_income_report">
 	          <div
 	            class="ds_report_header d-flex justify-content-between align-items-start"
@@ -322,7 +322,7 @@
 	        </div>
 	      </div>
 	      <!-- Upcoming Events -->
-	      <div class="col-lg-5 col-md-6">
+	      <div class="col-lg-4 col-md-6">
 	        <div class="dashboard_report dashboard_upcoming_events">
 	          <div
 	            class="ds_report_header d-flex justify-content-between align-items-start"

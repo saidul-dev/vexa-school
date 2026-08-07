@@ -40,10 +40,10 @@ $month_wise_payment = $month_wise_payment_for_json;
 		<div class="eSection-dashboardItems">
 			<div class="row flex-wrap">
 				<!-- Dashboard Short Details -->
-				<div class="col-lg-5">
+				<div class="col-12">
 					<div class="dashboard_ShortListItems">
 						<div class="row">
-							<div class="col-md-12">
+							<div class="col-md-6">
 								<div class="dashboard_ShortListItem">
 									<div
 										class="dsHeader d-flex justify-content-between align-items-center"
@@ -79,8 +79,10 @@ $month_wise_payment = $month_wise_payment_for_json;
 										</div>
 									</div>
 								</div>
+								</div>
+								<div class="col-md-6">
 							
-								<div class="dashboard_ShortListItem mt-3">
+								<div class="dashboard_ShortListItem">
 									<div
 										class="dsHeader d-flex justify-content-between align-items-center"
 										>
@@ -121,7 +123,7 @@ $month_wise_payment = $month_wise_payment_for_json;
 				</div>
 				<!-- Imcome Report -->
 				<!-- Upcoming Events -->
-				<div class="col-md-7">
+				<div class="col-12">
                     <div class="card bg-info">
                         <h6 class="ms-4 mt-4 mb-5 text-white">{{ get_phrase('Subscription Payment') }}</h6>
                         <div id="chartdiv" class="chartdiv"></div>
