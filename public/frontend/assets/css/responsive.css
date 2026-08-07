@@ -119,6 +119,37 @@
     .footer-social {
         margin-top: 30px;
     }
+    /* Hero CTA & Stats */
+    .hero-cta {
+        gap: 14px;
+    }
+    .hero-btn-primary,
+    .hero-btn-secondary {
+        padding: 13px 24px;
+        font-size: 15px;
+    }
+    .single-user {
+        padding: 24px 20px;
+    }
+    /* Testimonials */
+    .testimonial-card {
+        padding: 28px 24px;
+    }
+    /* Final CTA Banner */
+    .final-cta-area {
+        margin-bottom: -50px;
+    }
+    .final-cta-box {
+        padding: 34px 30px;
+        text-align: center;
+        justify-content: center;
+    }
+    .final-cta-text h3 {
+        font-size: 22px;
+    }
+    .footer-area {
+        padding-top: 110px;
+    }
 }
 @media all and (max-width:576px){
     .small-device-show img,
@@ -151,24 +182,59 @@
         font-size: 32px;
         line-height: 42px;
     }
-    .bannar-content h4 {
-        margin-bottom: 20px;
-    }
     .bannar-content p {
         margin-top: 14px;
     }
+    .hero-cta {
+        margin-top: 24px;
+        gap: 12px;
+    }
+    .hero-btn-primary,
+    .hero-btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+    .hero-trust-list {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 20px;
+    }
     .ekatoor-user {
-        margin-top: 40px;
+        margin-top: 30px;
+        gap: 10px;
+    }
+    .single-user {
+        padding: 14px 16px;
+        gap: 10px;
+    }
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
     }
     .single-user h3 {
-        font-size: 35px;
-        margin-bottom: 2px;
+        font-size: 20px;
     }
     .single-user span {
-        font-size: 17px;
+        font-size: 12px;
     }
     .bananr-right-img {
         padding-top: 35px;
+    }
+    /* Final CTA Banner */
+    .final-cta-area {
+        margin-bottom: -35px;
+    }
+    .final-cta-box {
+        padding: 26px 20px;
+    }
+    .final-cta-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .footer-area {
+        padding-top: 90px;
     }
     /* Title */
     .title-area h3 {
@@ -203,8 +269,20 @@
         padding-right: 21px;
     }
     /* Pricing  */
+    .pricing-table {
+        padding: 30px 20px;
+    }
     .pricing-item li {
         margin-top: 13px;
+    }
+    .pricing-table.popular,
+    .pricing-table.popular:hover {
+        -webkit-transform: none;
+                transform: none;
+    }
+    /* Testimonials */
+    .testimonial-card {
+        padding: 24px 20px;
     }
     /* Faq */
     .accordion-body p {

@@ -6,15 +6,39 @@
  $frontendFeatures = FrontendFeature::take(9)->get();
 
 @endphp --}}
-<style>
-    .service-icon i {
-  font-size: 24px;
-  font-weight: bold;
-  margin-left: 10px;
-  margin-top: 10px;
-  color: var(--secondary-color);
-}
-</style>
+<!--  Header Topbar Start -->
+<div class="header-topbar">
+    <div class="container-xl">
+        <div class="topbar-inner">
+            <ul class="topbar-info">
+                @if(get_settings('phone'))
+                <li><i class="fa-solid fa-phone"></i><a href="tel:{{ get_settings('phone') }}">{{ get_settings('phone') }}</a></li>
+                @endif
+                @if(get_settings('contact_email'))
+                <li><i class="fa-solid fa-envelope"></i><a href="mailto:{{ get_settings('contact_email') }}">{{ get_settings('contact_email') }}</a></li>
+                @endif
+                @if(get_settings('address'))
+                <li class="topbar-address"><i class="fa-solid fa-location-dot"></i>{{ get_settings('address') }}</li>
+                @endif
+            </ul>
+            <ul class="topbar-social">
+                @if(get_settings('facebook_link'))
+                <li><a href="{{ get_settings('facebook_link') }}" title="Facebook" target="_blank"><i class="fa-brands fa-facebook-f"></i></a></li>
+                @endif
+                @if(get_settings('twitter_link'))
+                <li><a href="{{ get_settings('twitter_link') }}" title="Twitter" target="_blank"><i class="fa-brands fa-twitter"></i></a></li>
+                @endif
+                @if(get_settings('linkedin_link'))
+                <li><a href="{{ get_settings('linkedin_link') }}" title="Linkedin" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                @endif
+                @if(get_settings('instagram_link'))
+                <li><a href="{{ get_settings('instagram_link') }}" title="Instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+                @endif
+            </ul>
+        </div>
+    </div>
+</div>
+<!--  Header Topbar End -->
 <!--  Header Area Start -->
 <header class="header-area">
     <div class="container-xl">
@@ -33,6 +57,7 @@
                         <li class="nav-item"><a class="nav-link" href="#">{{ get_phrase('Home') }}</a></li>
                         <li class="nav-item"><a class="nav-link" href="#feature">{{ get_phrase('Feature') }}</a></li>
                         <li class="nav-item"><a class="nav-link" href="#price">{{ get_phrase('Price') }}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#testimonial">{{ get_phrase('Testimonials') }}</a></li>
                         <li class="nav-item"><a class="nav-link" href="#faq">{{ get_phrase('Faq') }}</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">{{ get_phrase('Contact') }}</a></li>
                     </ul>
@@ -233,24 +258,45 @@
             <div class="col-lg-6">
                 <!-- Bannar Content -->
                 <div class="bannar-content">
-                    <h4>{{ get_settings('system_title') }}</h4>
                     <h2>{{ get_settings('banner_title') }}</h2>
                     <p>{{ get_settings('banner_subtitle') }}</p>
-                    <div class="ekatoor-user">
-                        <div class="single-user">
-                            <h3>{{ count($schools) }}</h3>
-                            <span>{{ get_phrase('Schools') }}</span>
-                        </div>
-                        <div class="single-user">
-                            <h3>{{ count($users) }}</h3>
-                            <span>{{ get_phrase('User Account') }}</span>
-                        </div>
+                    <div class="hero-cta">
+                        <a href="#" class="hero-btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">{{ get_phrase('Get Started Free') }} <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#feature" class="hero-btn-secondary">{{ get_phrase('Explore Features') }}</a>
                     </div>
+                    <ul class="hero-trust-list">
+                        <li><i class="fa-solid fa-circle-check"></i> {{ get_phrase('Cloud-based & always up to date') }}</li>
+                        <li><i class="fa-solid fa-circle-check"></i> {{ get_phrase('Bank-grade data security') }}</li>
+                        <li><i class="fa-solid fa-circle-check"></i> {{ get_phrase('No setup fee, cancel anytime') }}</li>
+                    </ul>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="bananr-right-img">
                     <img src="{{ asset('frontend/assets/image/bannar-image.png') }}" alt="image">
+                </div>
+                <div class="ekatoor-user">
+                    <div class="single-user">
+                        <span class="stat-icon"><i class="fa-solid fa-school"></i></span>
+                        <div class="stat-text">
+                            <h3>{{ count($schools) }}+</h3>
+                            <span>{{ get_phrase('Schools') }}</span>
+                        </div>
+                    </div>
+                    <div class="single-user">
+                        <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
+                        <div class="stat-text">
+                            <h3>{{ count($users) }}+</h3>
+                            <span>{{ get_phrase('User Account') }}</span>
+                        </div>
+                    </div>
+                    <div class="single-user">
+                        <span class="stat-icon"><i class="fa-solid fa-headset"></i></span>
+                        <div class="stat-text">
+                            <h3>24/7</h3>
+                            <span>{{ get_phrase('Support') }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -267,8 +313,20 @@
             <p>{{ get_settings('features_subtitle') }}</p>
         </div>
       
+        @php
+            $defaultFeatures = [
+                ['icon' => 'fa-solid fa-user-graduate', 'title' => get_phrase('Student Management'), 'description' => get_phrase('Handle admissions, profiles, ID cards and academic records from a single dashboard.')],
+                ['icon' => 'fa-solid fa-calendar-check', 'title' => get_phrase('Attendance Tracking'), 'description' => get_phrase('Take daily attendance for students and staff and generate instant reports.')],
+                ['icon' => 'fa-solid fa-file-lines', 'title' => get_phrase('Exam & Result'), 'description' => get_phrase('Create exams, enter marks and publish tabulated results and report cards automatically.')],
+                ['icon' => 'fa-solid fa-money-bill-wave', 'title' => get_phrase('Fee & Accounts'), 'description' => get_phrase('Collect fees online, track dues and manage complete school accounting in one place.')],
+                ['icon' => 'fa-solid fa-calendar-days', 'title' => get_phrase('Class Routine'), 'description' => get_phrase('Build conflict-free class routines and share them instantly with teachers and students.')],
+                ['icon' => 'fa-solid fa-chalkboard-user', 'title' => get_phrase('Online Class & Notice'), 'description' => get_phrase('Host online classes, share study material and publish notices for the whole school.')],
+                ['icon' => 'fa-solid fa-bell', 'title' => get_phrase('SMS & Notification'), 'description' => get_phrase('Send SMS and app notifications to parents for attendance, results and events.')],
+                ['icon' => 'fa-solid fa-bus', 'title' => get_phrase('Library & Transport'), 'description' => get_phrase('Manage library books and school transport routes with ease.')],
+            ];
+        @endphp
         <div class="row mt-5 pt-3">
-            @foreach ($frontendFeatures as $frontendFeature)
+            @forelse ($frontendFeatures as $frontendFeature)
             <div class="col-lg-3 col-md-4 col-sm-6 col-12  mb-60">
                 <div class="service-items">
                     <div class="service-icon">
@@ -280,9 +338,21 @@
                     </div>
                 </div>
             </div>
+            @empty
+            @foreach ($defaultFeatures as $defaultFeature)
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12  mb-60">
+                <div class="service-items">
+                    <div class="service-icon">
+                        <i class="{{ $defaultFeature['icon'] }}"></i>
+                    </div>
+                    <div class="service-text">
+                        <h3>{{ $defaultFeature['title'] }}</h3>
+                        <p>{{ $defaultFeature['description'] }}</p>
+                    </div>
+                </div>
+            </div>
             @endforeach
-            
-            
+            @endforelse
         </div>
 
         @if(count($frontendFeatures) > 7)
@@ -306,6 +376,7 @@
             <p>{{ get_settings('price_subtitle') }}</p>
         </div>
         <div class="row">
+        	@php $popularIndex = $packages->count() > 2 ? intdiv($packages->count(), 2) : -1; @endphp
         	@foreach($packages as $package)
 	        	@if($package->interval == 'Monthly')
 	        		@php $interval = 'mon'; @endphp
@@ -315,9 +386,12 @@
 	        		@php $interval = 'day'; @endphp
 	        	@endif
             <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="pricing-table">
+                <div class="pricing-table @if($loop->index == $popularIndex) popular @endif">
+                    @if($loop->index == $popularIndex)
+                        <span class="popular-badge">{{ get_phrase('Most Popular') }}</span>
+                    @endif
                     <span class="trail-price">{{ $package->name }}</span>
-                    <h4>{{ currency($package->price) }}<span class="small-text">/@if($package['interval'] == 'life_time')
+                    <h4>@if(!empty($package->price)){{ currency($package->price) }}@else<span class="price-free">{{ get_phrase('Free') }}</span>@endif<span class="small-text">/@if($package['interval'] == 'life_time')
                         {{ get_phrase('life time') }}
                         @else
                           <?php if($package['interval'] == 'Days'): ?>
@@ -326,16 +400,16 @@
                             {{ $package['interval'] }}
                         <?php endif; ?>
                         @endif</span></h4>
-                        <p class="color-ff">Total Students: {{ $package->studentLimit }}</p>
+                        <p class="color-ff pricing-student-limit">{{ get_phrase('Total Students') }}: {{ $package->studentLimit }}</p>
                         @php
 						$packages_features = json_decode($package->features);
-					 @endphp 
+					 @endphp
 
-                    <ul class="pricing-item" style="border-top:0px;">
+                    <ul class="pricing-item">
                         @foreach ($packages_features as $packages_feature)
-						<li class="color-ff">{{ $packages_feature }}</li>
+						<li class="color-ff"><i class="fa-solid fa-circle-check"></i> {{ $packages_feature }}</li>
 						@endforeach
-                        <li class="color-ff">Description: {{ $package->description }}</li>
+                        <li class="color-ff"><i class="fa-solid fa-circle-check"></i> {{ get_phrase('Description') }}: {{ $package->description }}</li>
                     </ul>
                     @if(Auth::check() && auth()->user()->role_id == 1)
                         <a href="javascript:;" class="subscribe-btn" onclick="subscription_warning('{{ auth()->user()->role_id }}')">{{ get_phrase('Subscribe') }}</a>
@@ -356,6 +430,44 @@
     </div>
 </section>
 <!--  Pricing Area End   -->
+<!--  Testimonial Area Start   -->
+<section class="testimonial-area section-padding" id="testimonial">
+    <div class="container-xl">
+        <!-- Title  -->
+        <div class="title-area">
+            <h1>{{ get_phrase('Reviews') }}</h1>
+            <h3>{{ get_phrase('Loved By Schools Everywhere') }}</h3>
+            <p>{{ get_phrase('Real feedback from administrators, teachers and parents using the platform every day') }}</p>
+        </div>
+        <div class="row">
+            @php
+                $testimonials = [
+                    ['name' => 'Rafiqul Islam', 'role' => get_phrase('Principal, Green Valley School'), 'initial' => 'R', 'quote' => get_phrase('We moved our entire admission and attendance process online in a week. Parents love the instant SMS updates.')],
+                    ['name' => 'Nusrat Jahan', 'role' => get_phrase('Accountant, Sunrise Academy'), 'initial' => 'N', 'quote' => get_phrase('Fee collection and accounts that used to take days now take minutes. The dashboard is refreshingly simple.')],
+                    ['name' => 'Tanvir Ahmed', 'role' => get_phrase('Admin, City Public School'), 'initial' => 'T', 'quote' => get_phrase('Exam results, routines and notices in one place. Our teachers and parents finally stay on the same page.')],
+                ];
+            @endphp
+            @foreach ($testimonials as $testimonial)
+            <div class="col-lg-4 col-md-6 mb-30">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-quote">&ldquo;{{ $testimonial['quote'] }}&rdquo;</p>
+                    <div class="testimonial-author">
+                        <span class="testimonial-avatar">{{ $testimonial['initial'] }}</span>
+                        <div>
+                            <h5>{{ $testimonial['name'] }}</h5>
+                            <span>{{ $testimonial['role'] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+<!--  Testimonial Area End   -->
 <!--  Faq  Area Start   -->
 <section class="faq-area" id="faq">
     <div class="container-xl">
@@ -409,6 +521,19 @@
     </div>
 </section>
 <!--  Contact Area End   -->
+<!-- Final CTA Banner Start -->
+<section class="final-cta-area">
+    <div class="container-xl">
+        <div class="final-cta-box">
+            <div class="final-cta-text">
+                <h3>{{ get_phrase('Ready to modernize your school?') }}</h3>
+                <p>{{ get_phrase('Join schools already saving hours every week with Ekattor.') }}</p>
+            </div>
+            <a href="#" class="final-cta-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">{{ get_phrase('Get Started Free') }} <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+<!-- Final CTA Banner End -->
 <!-- Footer Area Start -->
 <footer class="footer-area">
    <!-- footer Top Area -->
@@ -423,7 +548,19 @@
                         <p>{{ get_settings('frontend_footer_text') }}</p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 mb-5">
+                <div class="col-lg-2 col-md-6 col-sm-12 mb-5">
+                    <div class="footer-items">
+                        <h4>{{ get_phrase('Quick Links') }}</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">{{ get_phrase('Home') }}</a></li>
+                            <li><a href="#feature">{{ get_phrase('Feature') }}</a></li>
+                            <li><a href="#price">{{ get_phrase('Price') }}</a></li>
+                            <li><a href="#testimonial">{{ get_phrase('Testimonials') }}</a></li>
+                            <li><a href="#faq">{{ get_phrase('Faq') }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-5">
                     <div class="contacts footer-items">
                         <h4>Contact</h4>
                         <ul class="ad-contacts">
@@ -433,7 +570,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 mb-5">
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-5">
                     <div class="addons footer-items">
                         <h4>{{ get_phrase('Social Link') }}</h4>
                         <ul class="footer-social">
@@ -729,7 +866,9 @@
         }
     }
 
-        document.getElementById('see-btn').addEventListener('click', function() {
+        var seeAllBtn = document.getElementById('see-btn');
+        if (seeAllBtn) {
+        seeAllBtn.addEventListener('click', function() {
         var currentUrl = new URL(window.location.href);
         var seeAll = currentUrl.searchParams.get('see_all');
 
@@ -743,7 +882,8 @@
 
         // Redirect to the modified URL
         window.location.href = currentUrl.toString();
-    });
+        });
+        }
 
     function onSubmit(token) {
       document.getElementById("schoolReg").submit();
