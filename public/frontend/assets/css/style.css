@@ -493,28 +493,65 @@ img {
 
 /******** Modal Register Form Start
 ***************************************************************/
+.register-form-modal .modal-content {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(10, 28, 58, 0.25);
+}
+
+.register-form-modal .modal-header {
+    align-items: flex-start;
+    padding: 26px 30px;
+    border-bottom: 1px solid #EDF1F7;
+}
+
+.reg-modal-header-text {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.reg-modal-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--accent-gradient);
+    color: #fff;
+    font-size: 20px;
+}
+
 .register-form-modal .modal-title {
-    font-size: 25px !important;
+    font-size: 20px !important;
+    font-weight: 700;
     color: var(--primary-color);
-    margin: auto;
-    background: -webkit-linear-gradient(355deg, #059dff 15%, #6549d5 45%, #e33fa1 75%, #fb5343) 98%/200% 100%;
-    background: linear-gradient(95deg, #059dff 15%, #6549d5 45%, #e33fa1 75%, #fb5343) 98%/200% 100%;
-    background-clip: border-box;
-    text-transform: capitalize;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.reg-modal-subtitle {
+    font-size: 13px;
+    color: var(--color-default);
+    margin-top: 2px;
 }
 
 .register-form-modal .btn-close {
-    position: absolute;
-    top: 21px;
-    right: 21px;
-    height: 33px;
-    width: 33px;
-    line-height: 33px;
-    border: 1px solid #ddd;
+    flex-shrink: 0;
+    height: 34px;
+    width: 34px;
+    line-height: 34px;
+    border: 1px solid #EDF1F7;
     border-radius: 50%;
+    background-size: 12px;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+
+.register-form-modal .btn-close:hover {
+    background-color: #F5F9FC;
 }
 
 .register-form-modal .btn-close:focus {
@@ -523,46 +560,32 @@ img {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
 }
 
-.modal-header {
-    padding: 20px 10px;
-    padding: 20px 1rem;
-    border-bottom: 1px solid #ddd;
+.register-form-modal .modal-body {
+    padding: 28px 30px 10px;
 }
 
-.reg-modal-form h4 {
+.reg-step-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--primary-color);
-    margin: 20px 0;
-    line-height: 22px;
-    position: relative;
-    padding-left: 12px;
-    background: -webkit-linear-gradient(355deg, #059dff 15%, #6549d5 45%, #e33fa1 75%, #fb5343) 98%/200% 100%;
-    background: linear-gradient(95deg, #059dff 15%, #6549d5 45%, #e33fa1 75%, #fb5343) 98%/200% 100%;
-    background-clip: border-box;
-    text-transform: capitalize;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    margin-bottom: 22px;
 }
 
-.reg-modal-form h4:before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
-    width: 8px;
-    height: 8px;
+.reg-step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
-    background-color: #e3e4ea;
-}
-
-.modal-content {
-    padding-bottom: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
+    background: var(--accent-gradient);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
 }
 
 .single-form label {
@@ -572,15 +595,25 @@ img {
     color: var(--primary-color);
 }
 
+.single-form .input-group-text {
+    background-color: #F5F9FC;
+    border: 1px solid #E3E8F0;
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    color: var(--secondary-color);
+    width: 42px;
+    justify-content: center;
+}
+
 .single-form .form-select,
 .single-form .form-control {
-    padding: 9px 16px;
-    font-size: 12px;
-    color: #797c8b;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--primary-color);
     background-color: #fff;
-    border: 1px solid #cacfd4;
-    border-radius: 5px;
-    margin-bottom: 5px;
+    border: 1px solid #E3E8F0;
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 14px;
 }
 
 .single-form .form-select {
@@ -589,33 +622,54 @@ img {
 
 .single-form .form-select:focus,
 .single-form .form-control:focus {
-    box-shadow: none;
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.12);
     border-color: var(--secondary-color);
 }
 
-.single-form .form-select:hover,
-.single-form .form-control:hover {
+.single-form .input-group:focus-within .input-group-text {
     border-color: var(--secondary-color);
+    color: var(--secondary-color);
 }
 
-.single-form textarea {
-    min-height: 120px;
+.single-form textarea.form-control {
+    min-height: 90px;
+    max-height: 140px;
+}
+
+.single-form .input-group.align-items-start .input-group-text {
+    padding-top: 11px;
+}
+
+.reg-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 0 26px;
+    margin-top: 6px;
+    border-top: 1px solid #EDF1F7;
 }
 
 .m-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     border: 0;
-    width: 119px;
-    height: 40px;
-    border-radius: 5px;
-    background-color: var(--secondary-color);
-    font-size: 12px;
-    font-weight: 500;
+    padding: 14px 34px;
+    border-radius: 30px;
+    background: var(--accent-gradient);
+    font-size: 15px;
+    font-weight: 600;
     color: #fff;
-    float: right;
-    margin-top: 10px;
+    -webkit-transition: .3s;
+    transition: .3s;
 }
 
-/******** Modal Register Form End 
+.m-submit-btn:hover {
+    -webkit-transform: translateY(-2px);
+            transform: translateY(-2px);
+    box-shadow: 0 14px 26px rgba(6, 182, 212, 0.3);
+}
+
+/******** Modal Register Form End
 ***************************************************************/
 
 /******** Bannar Area Start

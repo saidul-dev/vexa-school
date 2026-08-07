@@ -143,8 +143,14 @@
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-center" id="staticBackdropLabel">{{ get_phrase('School Register Form') }}</h1>
+                <div class="modal-header reg-modal-header">
+                    <div class="reg-modal-header-text">
+                        <span class="reg-modal-icon"><i class="fa-solid fa-school"></i></span>
+                        <div>
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ get_phrase('School Register Form') }}</h1>
+                            <p class="reg-modal-subtitle">{{ get_phrase('Set up your school in a few simple steps') }}</p>
+                        </div>
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -153,93 +159,133 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="reg-modal-form">
-                                    <h4>{{ get_phrase('SCHOOL INFO') }}</h4>
+                                    <div class="reg-step-title"><span class="reg-step-number">1</span>{{ get_phrase('School Info') }}</div>
                                     <div class="reg-form-group">
                                         <div class="single-form">
                                             <label for="school_name">{{ get_phrase('School Name') }}</label>
-                                            <input id="school_name" name="school_name" type="text" class="form-control" required>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-school"></i></span>
+                                                <input id="school_name" name="school_name" type="text" class="form-control" required>
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="school_address">{{ get_phrase('School Address') }}</label>
-                                            <input id="school_address" name="school_address" type="text" class="form-control" required>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+                                                <input id="school_address" name="school_address" type="text" class="form-control" required>
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="school_email">{{ get_phrase('School Email') }}</label>
-                                            <input id="school_email" name="school_email" type="email" class="form-control" required>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                                                <input id="school_email" name="school_email" type="email" class="form-control" required>
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="school_phone">{{ get_phrase('School Phone') }}</label>
-                                            <input id="school_phone" name="school_phone" type="tel" class="form-control" required>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                                                <input id="school_phone" name="school_phone" type="tel" class="form-control" required>
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="school_info">{{ get_phrase('School info') }}</label>
-                                           <textarea name="school_info" id="school_info" class="form-control" required></textarea>
+                                            <div class="input-group align-items-start">
+                                                <span class="input-group-text"><i class="fa-solid fa-align-left"></i></span>
+                                                <textarea name="school_info" id="school_info" class="form-control" placeholder="{{ get_phrase('Briefly describe your school') }}" required></textarea>
+                                            </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="reg-modal-form">
-                                    <h4>{{ get_phrase('ADMIN INFO') }}</h4>
+                                    <div class="reg-step-title"><span class="reg-step-number">2</span>{{ get_phrase('Admin Info') }}</div>
                                     <div class="reg-form-group">
                                         <div class="single-form">
                                             <label for="admin_name">{{ get_phrase('Admin Name') }}</label>
-                                            <input id="admin_name" name="admin_name" type="text" class="form-control" required>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                                                <input id="admin_name" name="admin_name" type="text" class="form-control" required>
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="gender">{{ get_phrase('Gender') }}</label>
-                                            <select class="form-select" id="gender" name="gender" required>
-                                                <option value="">{{ get_phrase('Select a gender') }}</option>
-                                                <option value="Male">{{ get_phrase('Male') }}</option>
-                                                <option value="Female">{{ get_phrase('Female') }}</option>
-                                              </select>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-venus-mars"></i></span>
+                                                <select class="form-select" id="gender" name="gender" required>
+                                                    <option value="">{{ get_phrase('Select a gender') }}</option>
+                                                    <option value="Male">{{ get_phrase('Male') }}</option>
+                                                    <option value="Female">{{ get_phrase('Female') }}</option>
+                                                  </select>
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="blood_group">{{ get_phrase('Blood group') }}</label>
-                                            <select class="form-select"  id="blood_group" name="blood_group" required>
-                                                <option value="">{{ get_phrase('Select a blood group') }}</option>
-                                                <option value="a+">{{ get_phrase('A+') }}</option>
-							                    <option value="a-">{{ get_phrase('A-') }}</option>
-							                    <option value="b+">{{ get_phrase('B+') }}</option>
-							                    <option value="b-">{{ get_phrase('B-') }}</option>
-							                    <option value="ab+">{{ get_phrase('AB+') }}</option>
-							                    <option value="ab-">{{ get_phrase('AB-') }}</option>
-							                    <option value="o+">{{ get_phrase('O+') }}</option>
-							                    <option value="o-">{{ get_phrase('O-') }}</option>
-                                              </select>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-droplet"></i></span>
+                                                <select class="form-select"  id="blood_group" name="blood_group" required>
+                                                    <option value="">{{ get_phrase('Select a blood group') }}</option>
+                                                    <option value="a+">{{ get_phrase('A+') }}</option>
+								                    <option value="a-">{{ get_phrase('A-') }}</option>
+								                    <option value="b+">{{ get_phrase('B+') }}</option>
+								                    <option value="b-">{{ get_phrase('B-') }}</option>
+								                    <option value="ab+">{{ get_phrase('AB+') }}</option>
+								                    <option value="ab-">{{ get_phrase('AB-') }}</option>
+								                    <option value="o+">{{ get_phrase('O+') }}</option>
+								                    <option value="o-">{{ get_phrase('O-') }}</option>
+                                                  </select>
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="admin_address">{{ get_phrase('Admin Address') }}</label>
-                                            <input id="admin_address" name="admin_address" type="text" class="form-control" required>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+                                                <input id="admin_address" name="admin_address" type="text" class="form-control" required>
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="admin_phone">{{ get_phrase('Admin Phone Number') }}</label>
-                                            <input id="admin_phone" name="admin_phone" type="tel" class="form-control" required>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                                                <input id="admin_phone" name="admin_phone" type="tel" class="form-control" required>
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="photo">{{ get_phrase('Photo') }}</label>
-                                            <input class="form-control" type="file" accept="image/*" id="photo" name="photo" >
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-camera"></i></span>
+                                                <input class="form-control" type="file" accept="image/*" id="photo" name="photo" >
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="admin_email">{{ get_phrase('Admin Email') }}</label>
-                                            <input id="admin_email" name="admin_email" type="email" class="form-control" required>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                                                <input id="admin_email" name="admin_email" type="email" class="form-control" required>
+                                            </div>
                                         </div>
                                         <div class="single-form">
                                             <label for="admin_password">{{ get_phrase('Admin Password') }}</label>
-                                            <input id="admin_password" name="admin_password" type="password" class="form-control" required>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                                <input id="admin_password" name="admin_password" type="password" class="form-control" required>
+                                            </div>
                                         </div>
                                     </div>
-                                </div> 
-                                @if (get_settings('recaptcha_switch_value') == 'Yes')
-                                    <button class="g-recaptcha m-submit-btn" 
-                                    data-sitekey="{{ get_settings('recaptcha_site_key') }}" 
-                                    data-callback='onSubmit' 
-                                    data-action='submit' type="submit">{{ get_phrase('Submit') }}</button>
-                                @else
-                                <button class=" m-submit-btn" type="submit">{{ get_phrase('Submit') }}</button>
-                                @endif
-                                
+                                </div>
                             </div>
+                        </div>
+                        <div class="reg-modal-footer">
+                            @if (get_settings('recaptcha_switch_value') == 'Yes')
+                                <button class="g-recaptcha m-submit-btn"
+                                data-sitekey="{{ get_settings('recaptcha_site_key') }}"
+                                data-callback='onSubmit'
+                                data-action='submit' type="submit">{{ get_phrase('Submit') }} <i class="fa-solid fa-arrow-right"></i></button>
+                            @else
+                            <button class="m-submit-btn" type="submit">{{ get_phrase('Submit') }} <i class="fa-solid fa-arrow-right"></i></button>
+                            @endif
                         </div>
                     </form>
                 </div>
