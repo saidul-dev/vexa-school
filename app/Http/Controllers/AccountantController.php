@@ -255,6 +255,7 @@ class AccountantController extends Controller
             $data['timestamp'] = strtotime(date('d-M-Y'));
             $data['school_id'] = auth()->user()->school_id;
             $data['session_id'] = $active_session;
+            $data['amount'] = $data['total_amount'];
 
             $enrolments = Enrollment::where('class_id', $data['class_id'])
             ->where('section_id', $data['section_id'])

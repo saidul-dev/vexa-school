@@ -150,6 +150,18 @@
     transform: translateY(-1px);
 }
 
+.demo-login-btn{
+    color: #fff !important;
+    border-color: rgba(255,255,255,0.5) !important;
+}
+
+.demo-login-btn:hover,
+.demo-login-btn:focus{
+    color: #fff !important;
+    background-color: rgba(255,255,255,0.15) !important;
+    border-color: rgba(255,255,255,0.7) !important;
+}
+
 .form-logo-mobile{
     text-align: center;
     margin-bottom: 36px;
