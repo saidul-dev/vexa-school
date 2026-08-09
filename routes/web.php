@@ -487,6 +487,7 @@ Route::controller(AdminController::class)->middleware('admin','auth')->group(fun
 
     //Report routes
     Route::get('admin/reports/receipts_payments', 'receiptsPaymentsStatement')->name('admin.reports.receipts_payments')->middleware('admin_permission');
+    Route::get('admin/reports/receipts_payments/export', 'receiptsPaymentsExport')->name('admin.reports.receipts_payments.export')->middleware('admin_permission');
     Route::get('admin/reports/trial_balance', 'trialBalance')->name('admin.reports.trial_balance')->middleware('admin_permission');
 
 

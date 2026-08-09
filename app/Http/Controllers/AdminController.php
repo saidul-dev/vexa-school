@@ -3185,12 +3185,14 @@ class AdminController extends Controller
                                 ->where('date', '<=', $date_to)
                                 ->where('school_id', auth()->user()->school_id)
                                 ->where('session_id', $active_session)
+                                ->orderByDesc('id')
                                 ->get();
             } else {
                 $expenses = Expense::where('date', '>=', $date_from)
                                 ->where('date', '<=', $date_to)
                                 ->where('school_id', auth()->user()->school_id)
                                 ->where('session_id', $active_session)
+                                ->orderByDesc('id')
                                 ->get();
             }
 
@@ -3205,6 +3207,7 @@ class AdminController extends Controller
                                 ->where('date', '<=', $date_to)
                                 ->where('school_id', auth()->user()->school_id)
                                 ->where('session_id', $active_session)
+                                ->orderByDesc('id')
                                 ->get();
             return view('admin.expenses.expense_manager', ['account_heads' => $account_heads, 'expenses' => $expenses, 'selected_head' => $selected_head, 'date_from' => $date_from, 'date_to' => $date_to]);
         }
@@ -3319,6 +3322,7 @@ class AdminController extends Controller
             ->where('date', '<=', $date_to)
             ->where('school_id', auth()->user()->school_id)
             ->where('session_id', $active_session)
+            ->orderByDesc('id')
             ->get();
 
         return view('admin.incomes.income_manager', ['incomes' => $incomes, 'date_from' => $date_from, 'date_to' => $date_to]);
@@ -3427,7 +3431,7 @@ class AdminController extends Controller
             })
             ->with(['voucher.recordedBy', 'accountHead'])
             ->get()
-            ->sortBy(function ($line) { return $line->voucher->voucher_date; });
+            ->sortByDesc(function ($line) { return $line->voucher->voucher_date; });
 
         $heads = AccountHead::where('school_id', $schoolId)->get();
 
@@ -3480,6 +3484,46 @@ class AdminController extends Controller
         ];
 
         return view('admin.reports.receipts_payments', ['lines' => $lines, 'summary' => $summary, 'from' => $from, 'to' => $to, 'school' => $school, 'totals' => $totals]);
+    }
+
+    public function receiptsPaymentsExport(Request $request)
+    {
+        $schoolId = auth()->user()->school_id;
+
+        $from = $request->input('from', date('Y-m-01'));
+        $to = $request->input('to', date('Y-m-t'));
+
+        $lines = AccountVoucherLine::whereHas('voucher', function ($query) use ($schoolId, $from, $to) {
+                $query->where('school_id', $schoolId)->whereBetween('voucher_date', [$from, $to]);
+            })
+            ->with(['voucher.recordedBy', 'accountHead'])
+            ->get()
+            ->sortByDesc(function ($line) { return $line->voucher->voucher_date; });
+
+        $csv_columns = [get_phrase('Date'), get_phrase('Particulars'), get_phrase('Account Head'), get_phrase('Type'), get_phrase('Voucher No'), get_phrase('Recorded By'), get_phrase('Debit'), get_phrase('Credit')];
+        $csv_content = implode(',', array_map(fn ($column) => '"' . str_replace('"', '""', $column) . '"', $csv_columns));
+
+        foreach ($lines as $line) {
+            $csv_content .= "\n";
+            $csv_row = [
+                \Carbon\Carbon::parse($line->voucher->voucher_date)->format('d-M-Y'),
+                $line->voucher->particulars,
+                $line->accountHead->name ?? '',
+                ucfirst($line->accountHead->type ?? ''),
+                $line->voucher->voucher_no,
+                optional($line->voucher->recordedBy)->name ?? '-',
+                $line->debit > 0 ? number_format($line->debit, 2) : '',
+                $line->credit > 0 ? number_format($line->credit, 2) : '',
+            ];
+            $csv_content .= implode(',', array_map(fn ($field) => '"' . str_replace('"', '""', $field) . '"', $csv_row));
+        }
+
+        $file_name = 'receipts_payments_statement-' . $from . '-to-' . $to . '.csv';
+
+        return response($csv_content, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+        ]);
     }
 
     public function trialBalance(Request $request)

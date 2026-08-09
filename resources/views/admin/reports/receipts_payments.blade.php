@@ -40,6 +40,7 @@
                             {{ get_phrase('Export') }}
                           </button>
                           <ul class="dropdown-menu dropdown-menu-end eDropdown-menu-2">
+                            <li><a class="dropdown-item" href="{{ route('admin.reports.receipts_payments.export', ['from' => $from, 'to' => $to]) }}">{{ get_phrase('Excel') }}</a></li>
                             <li><a class="dropdown-item" href="javascript:;" onclick="generateReportPDF()">{{ get_phrase('PDF') }}</a></li>
                             <li><a class="dropdown-item" href="javascript:;" onclick="printReport()">{{ get_phrase('Print') }}</a></li>
                           </ul>
