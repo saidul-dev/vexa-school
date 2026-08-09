@@ -17,7 +17,7 @@ if (! function_exists('get_user_image')) {
             $user_id = $file_name_or_user_id;
             $user_information = DB::table('users')->where('id', $user_id)->value('user_information');
 
-            $file_name = json_decode($user_information)->photo;
+            $file_name = json_decode($user_information)->photo ?? '';
 
             if(file_exists( public_path().'/assets/uploads/user-images/'.$file_name ) && is_file(public_path().'/assets/uploads/user-images/'.$file_name)){
                 return asset('assets/uploads/user-images/'.$file_name);
