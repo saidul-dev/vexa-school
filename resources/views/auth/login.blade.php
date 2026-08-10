@@ -259,8 +259,12 @@
                                             <div class="d-flex justify-content-between gap-2">
                                                 <button type="button" class="btn btn-outline-secondary btn-sm w-100 demo-login-btn" data-email="superadmin@example.com" data-password="1234">{{ get_phrase('Super Admin') }}</button>
                                                 <button type="button" class="btn btn-outline-secondary btn-sm w-100 demo-login-btn" data-email="admin@example.com" data-password="1234">{{ get_phrase('Admin') }}</button>
-                                                <button type="button" class="btn btn-outline-secondary btn-sm w-100 demo-login-btn" data-email="parent.1.0808005425.8@demo.ekattor.test" data-password="password">{{ get_phrase('Parent') }}</button>
-                                                <button type="button" class="btn btn-outline-secondary btn-sm w-100 demo-login-btn" data-email="student.1.0808005425.1@demo.ekattor.test" data-password="password">{{ get_phrase('Student') }}</button>
+                                                @if($demo_parent)
+                                                <button type="button" class="btn btn-outline-secondary btn-sm w-100 demo-login-btn" data-email="{{ $demo_parent->email }}" data-password="password">{{ get_phrase('Parent') }}</button>
+                                                @endif
+                                                @if($demo_student)
+                                                <button type="button" class="btn btn-outline-secondary btn-sm w-100 demo-login-btn" data-email="{{ $demo_student->email }}" data-password="password">{{ get_phrase('Student') }}</button>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

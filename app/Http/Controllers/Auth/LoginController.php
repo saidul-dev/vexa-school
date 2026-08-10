@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -37,6 +39,16 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function showLoginForm()
+    {
+        $activeSchoolIds = DB::table('schools')->where('status', 1)->pluck('id');
+
+        $demo_student = User::where('role_id', 7)->where('email', 'like', '%@demo.ekattor.test')->whereIn('school_id', $activeSchoolIds)->orderByDesc('id')->first();
+        $demo_parent = User::where('role_id', 6)->where('email', 'like', '%@demo.ekattor.test')->whereIn('school_id', $activeSchoolIds)->orderByDesc('id')->first();
+
+        return view('auth.login', ['demo_student' => $demo_student, 'demo_parent' => $demo_parent]);
     }
 
     public function login(Request $request)
