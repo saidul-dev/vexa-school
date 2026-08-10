@@ -3556,7 +3556,65 @@ class AdminController extends Controller
             'credit' => $rows->sum('credit'),
         ];
 
-        return view('admin.reports.trial_balance', ['rows' => $rows, 'totals' => $totals, 'as_of' => $asOf]);
+        $school = get_school_settings($schoolId)->first();
+
+        return view('admin.reports.trial_balance', ['rows' => $rows, 'totals' => $totals, 'as_of' => $asOf, 'school' => $school]);
+    }
+
+    public function trialBalanceExport(Request $request)
+    {
+        $schoolId = auth()->user()->school_id;
+        $asOf = $request->input('as_of', date('Y-m-d'));
+
+        $heads = AccountHead::where('school_id', $schoolId)->where('status', 'active')->get();
+
+        $rows = $heads->map(function ($head) use ($asOf) {
+            $movement = AccountVoucherLine::where('account_head_id', $head->id)
+                ->whereHas('voucher', function ($query) use ($asOf) {
+                    $query->where('voucher_date', '<=', $asOf);
+                })
+                ->selectRaw('COALESCE(SUM(debit),0) as debit, COALESCE(SUM(credit),0) as credit')
+                ->first();
+
+            $openingSigned = $head->opening_balance_type == 'debit' ? $head->opening_balance : -$head->opening_balance;
+            $net = $openingSigned + (float) $movement->debit - (float) $movement->credit;
+
+            return [
+                'head' => $head,
+                'debit' => $net > 0 ? $net : 0,
+                'credit' => $net < 0 ? abs($net) : 0,
+            ];
+        });
+
+        $totals = [
+            'debit' => $rows->sum('debit'),
+            'credit' => $rows->sum('credit'),
+        ];
+
+        $csv_columns = [get_phrase('Account Head'), get_phrase('Type'), get_phrase('Debit'), get_phrase('Credit')];
+        $csv_content = implode(',', array_map(fn ($column) => '"' . str_replace('"', '""', $column) . '"', $csv_columns));
+
+        foreach ($rows as $row) {
+            $csv_content .= "\n";
+            $csv_row = [
+                $row['head']->name,
+                ucfirst($row['head']->type),
+                $row['debit'] > 0 ? number_format($row['debit'], 2) : '',
+                $row['credit'] > 0 ? number_format($row['credit'], 2) : '',
+            ];
+            $csv_content .= implode(',', array_map(fn ($field) => '"' . str_replace('"', '""', $field) . '"', $csv_row));
+        }
+
+        $csv_content .= "\n" . implode(',', array_map(fn ($field) => '"' . str_replace('"', '""', $field) . '"', [
+            get_phrase('Total'), '', number_format($totals['debit'], 2), number_format($totals['credit'], 2),
+        ]));
+
+        $file_name = 'trial_balance-' . $asOf . '.csv';
+
+        return response($csv_content, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+        ]);
     }
 
 
